@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginerrormsg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+  <TextView
+      android:id="@+id/mainHeading"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Meal Tracker"
+      android:textAlignment="center"
+      android:textSize="34sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.064" />
+
+  <TextView
+      android:id="@+id/loginHeading"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Login"
+      android:textAlignment="center"
+      android:textSize="24sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.502"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/mainHeading"
+      app:layout_constraintVertical_bias="0.065" />
+
+  <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="44dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.498"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/loginHeading"
+      app:layout_constraintVertical_bias="0.0"
+      tools:srcCompat="@tools:sample/avatars" />
+
+  <EditText
+      android:id="@+id/password"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:hint="Password"
+      android:inputType="textPassword"
+      android:textAlignment="center"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.502"
+      app:layout_constraintStart_toStartOf="parent"
+      tools:layout_editor_absoluteY="430dp" />
+
+  <EditText
+      android:id="@+id/username"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:hint="UserName"
+      android:inputType="textPersonName"
+      android:textAlignment="center"
+      app:layout_constraintBottom_toTopOf="@+id/password"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.502"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/imageView"
+      app:layout_constraintVertical_bias="0.653" />
+
+  <TextView
+      android:id="@+id/textView2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Username or pasword incorrect"
+      android:textColor="@color/design_default_color_error"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/password"
+      app:layout_constraintVertical_bias="0.04"
+      tools:visibility="invisible" />
+
+  <Button
+      android:id="@+id/loginbtn"
+      android:layout_width="99dp"
+      android:layout_height="49dp"
+      android:text="Login"
+      tools:layout_editor_absoluteX="151dp"
+      tools:layout_editor_absoluteY="515dp" />
+
+  <Button
+      android:id="@+id/signup"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Sign Up"
+      android:textAlignment="center"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.115"
+      app:layout_constraintStart_toEndOf="@+id/signuptextview"
+      tools:layout_editor_absoluteY="666dp" />
+
+  <TextView
+      android:id="@+id/signuptextview"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Dont have an account ?"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.205"
+      app:layout_constraintStart_toStartOf="parent"
+      tools:layout_editor_absoluteY="681dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

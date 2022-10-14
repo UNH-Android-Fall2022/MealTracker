@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "597843308892",
+    "project_id": "mealtracker-ad773",
+    "storage_bucket": "mealtracker-ad773.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597843308892:android:5bf20bda2971b2e093d199",
+        "android_client_info": {
+          "package_name": "com.example.mealtracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "597843308892-67fc3iqkm2obi39vi4kkco2puhn0u8sm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4sfiGuQbnljju7ObiW4dWfq4mp2rBH6Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "597843308892-67fc3iqkm2obi39vi4kkco2puhn0u8sm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
