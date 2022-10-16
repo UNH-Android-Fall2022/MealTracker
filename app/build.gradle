@@ -5,6 +5,10 @@ plugins {
 }
 
 android {
+
+    buildFeatures {
+        viewBinding = true
+    }
     namespace 'com.example.mealtracker'
     compileSdk 32
 

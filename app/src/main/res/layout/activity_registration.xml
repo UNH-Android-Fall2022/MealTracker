@@ -56,7 +56,7 @@
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/loginbtn"
+        app:layout_constraintBottom_toTopOf="@+id/registerbtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
@@ -65,16 +65,17 @@
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="124dp"
+        android:layout_marginBottom="120dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/loginbtn"
+        app:layout_constraintBottom_toTopOf="@+id/registerbtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
+
 
     <EditText
         android:id="@+id/username"
@@ -90,8 +91,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.369" />
-
+        app:layout_constraintVertical_bias="0.666" />
 
     <TextView
         android:id="@+id/errorTextView"
@@ -99,6 +99,7 @@
         android:layout_height="wrap_content"
         android:text="Username or pasword incorrect"
         android:textColor="@color/design_default_color_error"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.528"
@@ -108,7 +109,7 @@
         tools:visibility="invisible" />
 
     <Button
-        android:id="@+id/loginbtn"
+        android:id="@+id/registerbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register"
@@ -132,7 +133,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toEndOf="@+id/registerTextView"
-        app:layout_constraintTop_toBottomOf="@+id/loginbtn"
+        app:layout_constraintTop_toBottomOf="@+id/registerbtn"
         app:layout_constraintVertical_bias="0.78" />
 
     <TextView
@@ -144,7 +145,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.378"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginbtn"
+        app:layout_constraintTop_toBottomOf="@+id/registerbtn"
         app:layout_constraintVertical_bias="0.784" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
