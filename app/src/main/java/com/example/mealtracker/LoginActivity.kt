@@ -1,5 +1,6 @@
 package com.example.mealtracker
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -65,6 +66,13 @@ class LoginActivity : AppCompatActivity() {
                         }
                 }
             }
+        }
+
+        binding.signUp.setOnClickListener {
+            val intent = Intent(this@LoginActivity, Registration::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
         }
     }
 }
