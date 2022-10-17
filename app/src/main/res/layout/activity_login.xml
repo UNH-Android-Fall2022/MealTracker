@@ -57,7 +57,7 @@
       android:inputType="textPassword"
       android:minHeight="48dp"
       android:textAlignment="center"
-      app:layout_constraintBottom_toTopOf="@+id/registerbtn"
+      app:layout_constraintBottom_toTopOf="@+id/loginbtn"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.502"
       app:layout_constraintStart_toStartOf="parent" />
@@ -93,7 +93,7 @@
       tools:visibility="invisible" />
 
   <Button
-      android:id="@+id/registerbtn"
+      android:id="@+id/loginbtn"
       android:layout_width="99dp"
       android:layout_height="49dp"
       android:text="Login"
@@ -104,7 +104,7 @@
 
 
   <TextView
-      android:id="@+id/signIn"
+      android:id="@+id/signUp"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="Sign Up"
@@ -116,7 +116,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.09"
       app:layout_constraintStart_toEndOf="@+id/registerTextView"
-      app:layout_constraintTop_toBottomOf="@+id/registerbtn"
+      app:layout_constraintTop_toBottomOf="@+id/loginbtn"
       app:layout_constraintVertical_bias="0.78" />
 
   <TextView
@@ -128,7 +128,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.378"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/registerbtn"
+      app:layout_constraintTop_toBottomOf="@+id/loginbtn"
       app:layout_constraintVertical_bias="0.784" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

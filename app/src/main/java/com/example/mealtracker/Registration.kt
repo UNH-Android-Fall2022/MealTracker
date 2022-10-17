@@ -65,36 +65,46 @@ class Registration : AppCompatActivity() {
                     val emailId: String = binding.username.text.toString().trim() { it <= ' ' }
                     val password: String = binding.password.text.toString().trim() { it <= ' ' }
 
-                    db.createUserWithEmailAndPassword(emailId, password).addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val firebaseUser: FirebaseUser = task.result!!.user!!
-                            Toast.makeText(
-                                this@Registration,
-                                "Created User succesfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
+//                    https://firebase.google.com/docs/auth/android/start#kotlin+ktx_3
 
-                            val intent = Intent(this@Registration, LoginActivity::class.java)
-                            intent.flags =
-                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            intent.putExtra("userId", firebaseUser.uid)
-                            intent.putExtra("email", emailId)
-                            startActivity(intent)
-                            finish()
-                        } else {
+                    db.createUserWithEmailAndPassword(emailId, password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val firebaseUser: FirebaseUser = task.result!!.user!!
+                                Toast.makeText(
+                                    this@Registration,
+                                    "Created User succesfully",
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
-                            Toast.makeText(
-                                this@Registration,
-                                "Registration Unsuccefull",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                                val intent = Intent(this@Registration, LoginActivity::class.java)
+                                intent.flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                intent.putExtra("userId", firebaseUser.uid)
+                                intent.putExtra("email", emailId)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                Toast.makeText(
+                                    this@Registration,
+                                    task.exception!!.message.toString(),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
-                    }
 
                 }
             }
 
 
+        }
+
+        binding.signIn.setOnClickListener {
+
+            val intent = Intent(this@Registration, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
         }
     }
 }
