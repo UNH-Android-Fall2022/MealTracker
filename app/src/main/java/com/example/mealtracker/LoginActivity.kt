@@ -55,6 +55,15 @@ class LoginActivity : AppCompatActivity() {
                                     "Login Successfully",
                                     Toast.LENGTH_SHORT
                                 ).show()
+
+//                                Logging into the main activity
+
+                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                intent.flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                startActivity(intent)
+                                finish()
+
                             } else {
                                 Log.d(TAG, "Sign in failed", task.exception)
                                 Toast.makeText(
@@ -66,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
                         }
                 }
             }
+
         }
 
         binding.signUp.setOnClickListener {
@@ -74,5 +84,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
     }
+
 }
