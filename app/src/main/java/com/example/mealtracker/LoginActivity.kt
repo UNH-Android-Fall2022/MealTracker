@@ -24,7 +24,6 @@ class LoginActivity : AppCompatActivity() {
 
 //      https://firebase.google.com/docs/auth/android/start#kotlin+ktx_3
 
-
         binding.loginbtn.setOnClickListener {
             when {
                 TextUtils.isEmpty(binding.username.text.toString().trim { it <= ' ' }) -> {
