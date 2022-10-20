@@ -1,25 +1,29 @@
 package com.example.mealtracker
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
-import android.widget.Toast
-import com.example.mealtracker.databinding.ActivityLoginBinding
-import com.example.mealtracker.databinding.ActivityRegistrationBinding
+import androidx.appcompat.app.AppCompatActivity
+import com.example.mealtracker.databinding.FragmentHomeBinding
 import com.example.mealtracker.fragments.HomeFragment
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.PieChart
+
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.utils.MPPointF
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var pieList:ArrayList<PieEntry>;
+
+    private lateinit var binding: FragmentHomeBinding
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val fragmentManage= supportFragmentManager
-        val fragmenttrans=fragmentManage.beginTransaction()
-        fragmenttrans.replace(R.id.fragment_container,HomeFragment.newInstance("hello","hello2"))
         setContentView(R.layout.activity_main)
 
 
