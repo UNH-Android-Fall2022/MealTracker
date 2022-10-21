@@ -28,5 +28,4 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         selcetdDateBundle.putString("SELECTED_DATE", slectedDate)
         setFragmentResult("REQUEST_KEY", selcetdDateBundle)
     }
-
 }
