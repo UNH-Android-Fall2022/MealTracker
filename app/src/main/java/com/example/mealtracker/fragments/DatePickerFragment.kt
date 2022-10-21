@@ -23,10 +23,9 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         calendar.set(Calendar.YEAR, year)
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DATE, date)
-        val slectedDate = SimpleDateFormat("dd-MM-YY", Locale.ENGLISH).format(calendar.time)
+        val slectedDate = SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(calendar.time)
         val selcetdDateBundle = Bundle()
         selcetdDateBundle.putString("SELECTED_DATE", slectedDate)
         setFragmentResult("REQUEST_KEY", selcetdDateBundle)
     }
-
 }
