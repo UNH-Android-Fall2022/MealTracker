@@ -17,6 +17,8 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +36,9 @@ class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var pieChart: PieChart
+    private var currentDate: String = ""
     private lateinit var binding: FragmentHomeBinding
+    private val calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -63,6 +67,22 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.leftArrow.setOnClickListener {
+            this.calendar.add(Calendar.DAY_OF_MONTH, -1)
+            currentDate = SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(calendar.time)
+            binding.datePicker.text = currentDate
+//            Todo get the data from firebase
+        }
+
+        binding.rightArrow.setOnClickListener {
+            this.calendar.add(Calendar.DAY_OF_MONTH, 1)
+            currentDate = SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(calendar.time)
+            binding.datePicker.text = currentDate
+            //            Todo get the data from firebase
+
+        }
+
         binding.datePicker.setOnClickListener {
             val datePickerFragment = DatePickerFragment()
             val supportFragmentManager = requireActivity().supportFragmentManager
@@ -73,6 +93,18 @@ class HomeFragment : Fragment() {
                 if (resultKey == "REQUEST_KEY") {
                     val date = bundle.getString("SELECTED_DATE")
                     Log.d("Selected date", "$date")
+                    val slectedDate =
+                        SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(calendar.time)
+                    currentDate = date.toString()
+                    calendar.set(Calendar.YEAR, currentDate.split("-")[2].toInt())
+                    calendar.set(Calendar.MONTH, currentDate.split("-")[1].toInt())
+                    calendar.set(Calendar.DATE, currentDate.split("-")[0].toInt())
+                    if (slectedDate == date) {
+                        binding.datePicker.text = "Today"
+                    } else {
+                        binding.datePicker.text = date
+
+                    }
                 }
             }
             datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
