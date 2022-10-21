@@ -56,4 +56,7 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation('androidx.fragment:fragment-ktx:1.4.0-alpha02')
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+
 }

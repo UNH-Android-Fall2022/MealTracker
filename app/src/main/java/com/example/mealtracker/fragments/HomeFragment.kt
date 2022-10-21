@@ -3,10 +3,11 @@ package com.example.mealtracker.fragments
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.mealtracker.R
 import com.example.mealtracker.databinding.FragmentHomeBinding
 import com.github.mikephil.charting.animation.Easing
@@ -21,7 +22,6 @@ import com.github.mikephil.charting.utils.MPPointF
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-private lateinit var binding: FragmentHomeBinding
 
 
 /**
@@ -34,45 +34,49 @@ class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var pieChart: PieChart
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        binding = FragmentHomeBinding.inflate(layoutInflater)
 
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        binding=FragmentHomeBinding.inflate(layoutInflater)
-        setPieChart()
 //        return inflater.inflate(R.layout.fragment_home, container, false)
+        setPieChart()
+
         return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+//    https://www.youtube.com/watch?v=OEhSuv-_a9w&ab_channel=geekofia
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.datePicker.setOnClickListener {
+            val datePickerFragment = DatePickerFragment()
+            val supportFragmentManager = requireActivity().supportFragmentManager
+            Log.d("In date picker ", "button clicked")
+            supportFragmentManager.setFragmentResultListener(
+                "REQUEST_KEY", viewLifecycleOwner
+            ) { resultKey, bundle ->
+                if (resultKey == "REQUEST_KEY") {
+                    val date = bundle.getString("SELECTED_DATE")
+                    Log.d("Selected date", "$date")
                 }
             }
+            datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+        }
     }
 
 
