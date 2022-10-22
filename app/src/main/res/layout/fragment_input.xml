@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.InputFragment">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="150dp"
+                android:layout_margin="10dp"
+                android:background="@color/yellow"
+                android:contentDescription="TODO" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="216dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="Date"
+                app:hintTextColor="@color/black"
+                app:startIconContentDescription="Enter Date"
+                app:startIconDrawable="@drawable/ic_baseline_calendar_month_24" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="216dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="Enter Date"
+                app:startIconDrawable="@drawable/ic_baseline_access_time_24" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="216dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="Enter Date"
+                app:startIconDrawable="@drawable/ic_baseline_search_24" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="216dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="Enter Date"
+                app:startIconDrawable="@drawable/weight" />
+
+            <Button
+                android:id="@+id/containedButton"
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                app:icon="@drawable/save" />
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</FrameLayout>

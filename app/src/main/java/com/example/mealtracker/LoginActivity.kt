@@ -1,11 +1,11 @@
 package com.example.mealtracker
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.mealtracker.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -49,17 +49,20 @@ class LoginActivity : AppCompatActivity() {
                             if (task.isSuccessful) {
                                 Log.d(TAG, "Sign in successfully")
                                 val user = db.currentUser
-                                Toast.makeText(
-                                    this@LoginActivity,
-                                    "Login Successfully",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                if (user != null) {
+                                    Toast.makeText(
+                                        this@LoginActivity,
+                                        "Login Successfully",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
 
 //                                Logging into the main activity
 
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 intent.flags =
                                     Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                intent.putExtra("USER_ID", user?.uid)
                                 startActivity(intent)
                                 finish()
 

@@ -2,20 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/new_game"
+        android:id="@+id/today"
         android:title="Home" />
 
     <item
-        android:id="@+id/message"
+        android:id="@+id/weekly"
         android:title="Weekly" />
 
     <item
-        android:id="@+id/settings"
-        android:title="Monthly" />
+        android:id="@+id/monthly"
+        android:title="Weekly" />
 
     <item
         android:id="@+id/add"
-        android:title="ADD"
-        />
+        android:title="ADD" />
 
 </menu>
