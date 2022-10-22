@@ -7,11 +7,10 @@
     tools:context=".MainActivity">
 
 
-    <androidx.fragment.app.FragmentContainerView
+    <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="669dp"
-        tools:layout="@layout/fragment_home" />
+        android:layout_height="669dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
