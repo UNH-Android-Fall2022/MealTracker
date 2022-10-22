@@ -60,6 +60,25 @@ class InputFragment : Fragment() {
             datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
 
         }
+
+        binding.timePicker.setOnClickListener {
+            val timePickerFragment = TimePickerFragment()
+            val supportFragmentManager = requireActivity().supportFragmentManager
+            Log.d("In time picker ", "button clicked")
+            supportFragmentManager.setFragmentResultListener(
+                "REQUEST_KEY", viewLifecycleOwner
+            ) { resultKey, bundle ->
+                if (resultKey == "REQUEST_KEY") {
+                    val time = bundle.getString("SELECTED_TIME")
+                    Log.d("Selected time", "$time")
+//                    currentDate = time.toString()
+//                    calendar.set(Calendar.MINUTE, currentDate.split("-")[1].toInt())
+//                    calendar.set(Calendar.HOUR, currentDate.split("-")[0].toInt())
+                    binding.timePicker.setText(time)
+                }
+            }
+            timePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+        }
     }
 
 
