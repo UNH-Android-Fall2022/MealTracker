@@ -39,47 +39,62 @@ class InputFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.datePicker.setOnClickListener {
-            val datePickerFragment = DatePickerFragment()
-            val supportFragmentManager = requireActivity().supportFragmentManager
-            Log.d("In date picker ", "button clicked")
-            supportFragmentManager.setFragmentResultListener(
-                "REQUEST_KEY", viewLifecycleOwner
-            ) { resultKey, bundle ->
-                if (resultKey == "REQUEST_KEY") {
-                    val date = bundle.getString("SELECTED_DATE")
-                    Log.d("Selected date", "$date")
-                    val slectedDate =
-                        SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(calendar.time)
-                    currentDate = date.toString()
-                    calendar.set(Calendar.YEAR, currentDate.split("-")[2].toInt())
-                    calendar.set(Calendar.MONTH, currentDate.split("-")[1].toInt())
-                    calendar.set(Calendar.DATE, currentDate.split("-")[0].toInt())
-                    binding.datePicker.setText(date)
-                }
-            }
-            datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
-
+            datePicker()
         }
 
         binding.timePicker.setOnClickListener {
-            val timePickerFragment = TimePickerFragment()
-            val supportFragmentManager = requireActivity().supportFragmentManager
-            Log.d("In time picker ", "button clicked")
-            supportFragmentManager.setFragmentResultListener(
-                "REQUEST_KEY", viewLifecycleOwner
-            ) { resultKey, bundle ->
-                if (resultKey == "REQUEST_KEY") {
-                    val time = bundle.getString("SELECTED_TIME")
-                    Log.d("Selected time", "$time")
-//                    currentDate = time.toString()
-//                    calendar.set(Calendar.MINUTE, currentDate.split("-")[1].toInt())
-//                    calendar.set(Calendar.HOUR, currentDate.split("-")[0].toInt())
-                    binding.timePicker.setText(time)
-                }
-            }
-            timePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+            timePicker()
         }
     }
 
+    private fun timePicker() {
+        val timePickerFragment = TimePickerFragment()
+        val supportFragmentManager = requireActivity().supportFragmentManager
+        Log.d("In time picker ", "button clicked")
+        supportFragmentManager.setFragmentResultListener(
+            "REQUEST_KEY", viewLifecycleOwner
+        ) { resultKey, bundle ->
+            if (resultKey == "REQUEST_KEY") {
+                val time = bundle.getString("SELECTED_TIME")
+                Log.d("Selected time", "$time")
+                //                    currentDate = time.toString()
+                //                    calendar.set(Calendar.MINUTE, currentDate.split("-")[1].toInt())
+                //                    calendar.set(Calendar.HOUR, currentDate.split("-")[0].toInt())
+                binding.timePicker.setText(time)
+            }
+        }
+        timePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+    }
 
+
+    // To get the date from the user
+    private fun datePicker() {
+        val datePickerFragment = DatePickerFragment()
+        val supportFragmentManager = requireActivity().supportFragmentManager
+        Log.d("In date picker ", "button clicked")
+        supportFragmentManager.setFragmentResultListener(
+            "REQUEST_KEY", viewLifecycleOwner
+        ) { resultKey, bundle ->
+            if (resultKey == "REQUEST_KEY") {
+                val date = bundle.getString("SELECTED_DATE")
+                Log.d("Selected date", "$date")
+                val slectedDate =
+                    SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(calendar.time)
+                currentDate = date.toString()
+                calendar.set(Calendar.YEAR, currentDate.split("-")[2].toInt())
+                calendar.set(Calendar.MONTH, currentDate.split("-")[1].toInt())
+                calendar.set(Calendar.DATE, currentDate.split("-")[0].toInt())
+                binding.datePicker.setText(date)
+            }
+        }
+        datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+    }
+
+
+    // Making the api call to the server for getting suggestions bases on users input
+    private fun getSuggestions(input: String) {
+        binding.idPBLoading.visibility = View.VISIBLE
+
+
+    }
 }
