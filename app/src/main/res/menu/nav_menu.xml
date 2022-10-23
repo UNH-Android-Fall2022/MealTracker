@@ -3,18 +3,22 @@
 
     <item
         android:id="@+id/today"
+        android:enabled="true"
         android:title="Home" />
 
     <item
         android:id="@+id/weekly"
+        android:enabled="true"
         android:title="Weekly" />
 
     <item
         android:id="@+id/monthly"
+        android:enabled="true"
         android:title="Weekly" />
 
     <item
         android:id="@+id/add"
+        android:enabled="true"
         android:title="ADD" />
 
 </menu>
