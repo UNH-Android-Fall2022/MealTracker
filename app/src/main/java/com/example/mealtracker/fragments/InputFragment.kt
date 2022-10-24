@@ -7,6 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.mealtracker.databinding.FragmentInputBinding
+import com.example.mealtracker.interfaces.ApiInterface
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -15,6 +21,8 @@ class InputFragment : Fragment() {
     private val calendar = Calendar.getInstance()
     private var currentDate: String = ""
     private lateinit var binding: FragmentInputBinding
+    private var URL: String =
+        "https://api.edamam.com/"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +52,10 @@ class InputFragment : Fragment() {
 
         binding.timePicker.setOnClickListener {
             timePicker()
+        }
+
+        binding.searchBox.setOnClickListener {
+            getSuggestions("banana")
         }
     }
 
@@ -95,6 +107,26 @@ class InputFragment : Fragment() {
     private fun getSuggestions(input: String) {
         binding.idPBLoading.visibility = View.VISIBLE
 
+        val retroFitBuilder = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(URL).build().create(ApiInterface::class.java)
+        val retoFitData = retroFitBuilder.getData()
+        retoFitData.enqueue(object : Callback<List<String>?> {
+            override fun onResponse(call: Call<List<String>?>, response: Response<List<String>?>) {
+                val responseBody = response.body()!!
+                val myStringBuilder = StringBuilder()
+                for (myData in responseBody) {
+                    myStringBuilder.append(myData)
+                    myStringBuilder.append("\n")
+                }
+                Log.d("Inside InputFragment", myStringBuilder.toString())
+            }
+
+            override fun onFailure(call: Call<List<String>?>, t: Throwable) {
+                Log.d("Main Activity ", "On failure " + t.message)
+            }
+        })
+
+        binding.idPBLoading.visibility = View.GONE
 
     }
 }
