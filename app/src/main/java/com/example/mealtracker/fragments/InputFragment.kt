@@ -1,10 +1,12 @@
 package com.example.mealtracker.fragments
 
+import android.R
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import com.example.mealtracker.databinding.FragmentInputBinding
 import com.example.mealtracker.interfaces.ApiInterface
@@ -16,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class InputFragment : Fragment() {
 
     private val calendar = Calendar.getInstance()
@@ -23,6 +26,10 @@ class InputFragment : Fragment() {
     private lateinit var binding: FragmentInputBinding
     private var URL: String =
         "https://api.edamam.com/"
+
+    var suggestions: List<String> = ArrayList<String>()
+    var adapter: ArrayAdapter<String>? = null
+//    var autocomplete  =null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,13 +57,25 @@ class InputFragment : Fragment() {
             datePicker()
         }
 
+
+
         binding.timePicker.setOnClickListener {
             timePicker()
         }
 
-        binding.searchBox.setOnClickListener {
-            getSuggestions("banana")
+        binding.findSuggestions.setOnClickListener {
+            suggestions = getSuggestions("chi")
+            //this will call your method every time the user stops typing, if you want to call it for each letter, call it in onTextChanged
+            adapter =
+                ArrayAdapter<String>(requireActivity(), R.layout.simple_list_item_1, suggestions)
+
+            var autocomplete = binding.searchBox
+
+            autocomplete.setAdapter(adapter)
+            adapter?.notifyDataSetChanged()
         }
+
+
     }
 
     private fun timePicker() {
@@ -104,9 +123,8 @@ class InputFragment : Fragment() {
 
 
     // Making the api call to the server for getting suggestions bases on users input
-    private fun getSuggestions(input: String) {
-        binding.idPBLoading.visibility = View.VISIBLE
-
+    private fun getSuggestions(input: String): ArrayList<String> {
+        val myArrayList = ArrayList<String>()
         val retroFitBuilder = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
             .baseUrl(URL).build().create(ApiInterface::class.java)
         val retoFitData = retroFitBuilder.getData()
@@ -115,10 +133,18 @@ class InputFragment : Fragment() {
                 val responseBody = response.body()!!
                 val myStringBuilder = StringBuilder()
                 for (myData in responseBody) {
+                    myArrayList.add(myData)
                     myStringBuilder.append(myData)
                     myStringBuilder.append("\n")
                 }
                 Log.d("Inside InputFragment", myStringBuilder.toString())
+//                suggestions = myArrayList
+//                adapter = ArrayAdapter<String>(
+//                    requireActivity(),
+//                    R.layout.simple_list_item_1, suggestions
+//                )
+//                adapter?.notifyDataSetChanged()
+
             }
 
             override fun onFailure(call: Call<List<String>?>, t: Throwable) {
@@ -126,7 +152,11 @@ class InputFragment : Fragment() {
             }
         })
 
-        binding.idPBLoading.visibility = View.GONE
+        return myArrayList
+
 
     }
+
 }
+
+
