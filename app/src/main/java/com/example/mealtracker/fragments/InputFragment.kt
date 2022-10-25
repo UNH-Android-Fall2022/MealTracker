@@ -57,14 +57,14 @@ class InputFragment : Fragment() {
             datePicker()
         }
 
-
-
         binding.timePicker.setOnClickListener {
             timePicker()
         }
 
         binding.findSuggestions.setOnClickListener {
-            suggestions = getSuggestions("chi")
+
+            val query = binding.searchBox.text.trim().toString()
+            suggestions = getSuggestions(query)
             //this will call your method every time the user stops typing, if you want to call it for each letter, call it in onTextChanged
             adapter =
                 ArrayAdapter<String>(requireActivity(), R.layout.simple_list_item_1, suggestions)
@@ -127,7 +127,7 @@ class InputFragment : Fragment() {
         val myArrayList = ArrayList<String>()
         val retroFitBuilder = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
             .baseUrl(URL).build().create(ApiInterface::class.java)
-        val retoFitData = retroFitBuilder.getData()
+        val retoFitData = retroFitBuilder.getData(input)
         retoFitData.enqueue(object : Callback<List<String>?> {
             override fun onResponse(call: Call<List<String>?>, response: Response<List<String>?>) {
                 val responseBody = response.body()!!
