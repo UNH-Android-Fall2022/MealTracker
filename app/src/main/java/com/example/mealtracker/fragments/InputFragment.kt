@@ -2,11 +2,13 @@ package com.example.mealtracker.fragments
 
 import android.R
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.mealtracker.databinding.FragmentInputBinding
 import com.example.mealtracker.interfaces.ApiInterface
@@ -63,18 +65,31 @@ class InputFragment : Fragment() {
 
         binding.findSuggestions.setOnClickListener {
 
-            val query = binding.searchBox.text.trim().toString()
-            suggestions = getSuggestions(query)
-            //this will call your method every time the user stops typing, if you want to call it for each letter, call it in onTextChanged
-            adapter =
-                ArrayAdapter<String>(requireActivity(), R.layout.simple_list_item_1, suggestions)
+            when {
+                TextUtils.isEmpty(binding.searchBox.text.toString().trim { it <= ' ' }) -> {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Please enter a food name",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else -> {
+                    val query = binding.searchBox.text.trim().toString()
+                    suggestions = getSuggestions(query)
+                    //this will call your method every time the user stops typing, if you want to call it for each letter, call it in onTextChanged
+                    adapter =
+                        ArrayAdapter<String>(
+                            requireActivity(),
+                            R.layout.simple_list_item_1,
+                            suggestions
+                        )
+                    var autocomplete = binding.searchBox
 
-            var autocomplete = binding.searchBox
-
-            autocomplete.setAdapter(adapter)
-            adapter?.notifyDataSetChanged()
+                    autocomplete.setAdapter(adapter)
+                    adapter?.notifyDataSetChanged()
+                }
+            }
         }
-
 
     }
 
