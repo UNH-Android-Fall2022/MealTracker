@@ -21,6 +21,7 @@ import com.example.mealtracker.userProfie.Time
 import com.example.mealtracker.userProfie.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import retrofit2.Call
@@ -38,7 +39,7 @@ class InputFragment : Fragment() {
     private var currentDate: String = ""
     private lateinit var binding: FragmentInputBinding
     private var URL: String = "https://api.edamam.com/"
-    private val db = Firebase.firestore
+    private var db = Firebase.firestore
     private lateinit var authenticaion: FirebaseAuth
 //    private lateinit var databaseReference: DatabaseReference
 
@@ -194,7 +195,7 @@ class InputFragment : Fragment() {
                     nutrients.PROCNT.toDouble(),
                     nutrients.ENERC_KCAL
                 )
-                writeDateToFirebase(
+                writeDataToFireStore(
                     foodNutrients!!,
                     "11-12-32",
                     "12-32",
@@ -229,8 +230,8 @@ class InputFragment : Fragment() {
 //        val uid = authenticaion.currentUser?.uid
         val uid = "OLbgV02I7aQzrxooENPCm2ptGUG2"
 
-        val database = FirebaseDatabase.getInstance().reference.child("Users")
 
+        val database = FirebaseDatabase.getInstance().reference.child("Users")
         val timeT = Time(nutrientsX, "Image Url", "BreakFast", quantity, time)
         val dateD = com.example.mealtracker.userProfie.Date(date, listOf(timeT))
         val user = UserData(listOf(dateD), "First User")
@@ -243,6 +244,37 @@ class InputFragment : Fragment() {
 
             database.child(uid).setValue(user)
         }
+    }
+
+
+    private fun writeDataToFireStore(
+        nutrientsX: FoodNutrients,
+        date: String,
+        time: String,
+        quantity: String
+    ) {
+        db = FirebaseFirestore.getInstance()
+        val userRef = db.collection("Users")
+        val uid = "OLbgV02I7aQzrxooENPCm2ptGUG2"
+        val timeT = Time(nutrientsX, "Image Url", "BreakFast", quantity, time)
+        val dateD = com.example.mealtracker.userProfie.Date(date, listOf(timeT))
+        val user = UserData(listOf(dateD), "First User")
+        userRef.document(uid).set(user)
+            .addOnSuccessListener {
+                Toast.makeText(
+                    requireActivity(),
+                    "Saved Data Successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .addOnFailureListener { exception ->
+                Log.d("error", "exception " + exception.message)
+                Toast.makeText(
+                    requireActivity(),
+                    "exception " + exception.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
 }
