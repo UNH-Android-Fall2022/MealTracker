@@ -11,7 +11,18 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.mealtracker.databinding.FragmentInputBinding
+import com.example.mealtracker.foodDetails.FoodDetails
+import com.example.mealtracker.foodDetails.FoodX
+import com.example.mealtracker.foodDetails.NutrientsX
+import com.example.mealtracker.foodDetails.Parsed
 import com.example.mealtracker.interfaces.ApiInterface
+import com.example.mealtracker.userProfie.FoodNutrients
+import com.example.mealtracker.userProfie.Time
+import com.example.mealtracker.userProfie.UserData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,8 +37,10 @@ class InputFragment : Fragment() {
     private val calendar = Calendar.getInstance()
     private var currentDate: String = ""
     private lateinit var binding: FragmentInputBinding
-    private var URL: String =
-        "https://api.edamam.com/"
+    private var URL: String = "https://api.edamam.com/"
+    private val db = Firebase.firestore
+    private lateinit var authenticaion: FirebaseAuth
+//    private lateinit var databaseReference: DatabaseReference
 
     var suggestions: List<String> = ArrayList<String>()
     var adapter: ArrayAdapter<String>? = null
@@ -43,11 +56,9 @@ class InputFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
         return binding.root
 //        return inflater.inflate(R.layout.fragment_input, container, false)
     }
@@ -64,33 +75,34 @@ class InputFragment : Fragment() {
         }
 
         binding.findSuggestions.setOnClickListener {
-
-            when {
-                TextUtils.isEmpty(binding.searchBox.text.toString().trim { it <= ' ' }) -> {
-                    Toast.makeText(
-                        requireActivity(),
-                        "Please enter a food name",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                else -> {
-                    val query = binding.searchBox.text.trim().toString()
-                    suggestions = getSuggestions(query)
-                    //this will call your method every time the user stops typing, if you want to call it for each letter, call it in onTextChanged
-                    adapter =
-                        ArrayAdapter<String>(
-                            requireActivity(),
-                            R.layout.simple_list_item_1,
-                            suggestions
-                        )
-                    var autocomplete = binding.searchBox
-
-                    autocomplete.setAdapter(adapter)
-                    adapter?.notifyDataSetChanged()
-                }
-            }
+            showDropDown()
         }
 
+        binding.saveToFirebase.setOnClickListener {
+
+            getFoodDetails(binding.searchBox.text.toString())
+
+        }
+    }
+
+    private fun showDropDown() {
+        when {
+            TextUtils.isEmpty(binding.searchBox.text.toString().trim { it <= ' ' }) -> {
+                Toast.makeText(
+                    requireActivity(), "Please enter a food name", Toast.LENGTH_SHORT
+                ).show()
+            }
+            else -> {
+                val query = binding.searchBox.text.trim().toString()
+                suggestions = getSuggestions(query)
+                adapter = ArrayAdapter<String>(
+                    requireActivity(), R.layout.simple_list_item_1, suggestions
+                )
+                var autocomplete = binding.searchBox
+                autocomplete.setAdapter(adapter)
+                adapter?.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun timePicker() {
@@ -103,9 +115,6 @@ class InputFragment : Fragment() {
             if (resultKey == "REQUEST_KEY") {
                 val time = bundle.getString("SELECTED_TIME")
                 Log.d("Selected time", "$time")
-                //                    currentDate = time.toString()
-                //                    calendar.set(Calendar.MINUTE, currentDate.split("-")[1].toInt())
-                //                    calendar.set(Calendar.HOUR, currentDate.split("-")[0].toInt())
                 binding.timePicker.setText(time)
             }
         }
@@ -136,12 +145,12 @@ class InputFragment : Fragment() {
         datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
     }
 
-
     // Making the api call to the server for getting suggestions bases on users input
     private fun getSuggestions(input: String): ArrayList<String> {
         val myArrayList = ArrayList<String>()
-        val retroFitBuilder = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(URL).build().create(ApiInterface::class.java)
+        val retroFitBuilder =
+            Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL)
+                .build().create(ApiInterface::class.java)
         val retoFitData = retroFitBuilder.getData(input)
         retoFitData.enqueue(object : Callback<List<String>?> {
             override fun onResponse(call: Call<List<String>?>, response: Response<List<String>?>) {
@@ -153,23 +162,87 @@ class InputFragment : Fragment() {
                     myStringBuilder.append("\n")
                 }
                 Log.d("Inside InputFragment", myStringBuilder.toString())
-//                suggestions = myArrayList
-//                adapter = ArrayAdapter<String>(
-//                    requireActivity(),
-//                    R.layout.simple_list_item_1, suggestions
-//                )
-//                adapter?.notifyDataSetChanged()
-
             }
 
             override fun onFailure(call: Call<List<String>?>, t: Throwable) {
+                Toast.makeText(
+                    requireActivity(), "error fetching from API" + t.message, Toast.LENGTH_SHORT
+                ).show()
+                Log.d("Main Activity ", "On failure " + t.message)
+            }
+        })
+        return myArrayList
+    }
+
+    private fun getFoodDetails(input: String): FoodNutrients? {
+        var foodNutrients: FoodNutrients? = null
+        val retroFitBuilder =
+            Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL)
+                .build().create(ApiInterface::class.java)
+        val retoFitData = retroFitBuilder.getFoodDetails(input)
+        retoFitData.enqueue(object : Callback<FoodDetails?> {
+            override fun onResponse(call: Call<FoodDetails?>, response: Response<FoodDetails?>) {
+                val responseBody = response.body()!!
+                val parsed: List<Parsed> = responseBody.parsed
+                val food: FoodX = parsed[0].food
+                val nutrients: NutrientsX = food.nutrients
+                Log.d("Inside the fragment nutrients data", nutrients.toString())
+                foodNutrients = FoodNutrients(
+                    nutrients.CHOCDF.toDouble(),
+                    nutrients.FAT.toDouble(),
+                    nutrients.FIBTG.toDouble(),
+                    nutrients.PROCNT.toDouble(),
+                    nutrients.ENERC_KCAL
+                )
+                writeDateToFirebase(
+                    foodNutrients!!,
+                    "11-12-32",
+                    "12-32",
+                    "23"
+//                    binding.datePicker.text.toString(),
+//                    binding.timePicker.text.toString(),
+//                    binding.quantity.text.toString()
+                )
+
+            }
+
+            override fun onFailure(call: Call<FoodDetails?>, t: Throwable) {
+                Toast.makeText(
+                    requireActivity(), "error fetching from API" + t.message, Toast.LENGTH_SHORT
+                ).show()
                 Log.d("Main Activity ", "On failure " + t.message)
             }
         })
 
-        return myArrayList
+        Log.d("Outside the fragment", foodNutrients.toString())
+        return foodNutrients
+    }
 
 
+    private fun writeDateToFirebase(
+        nutrientsX: FoodNutrients,
+        date: String,
+        time: String,
+        quantity: String
+    ) {
+        authenticaion = FirebaseAuth.getInstance()
+//        val uid = authenticaion.currentUser?.uid
+        val uid = "OLbgV02I7aQzrxooENPCm2ptGUG2"
+
+        val database = FirebaseDatabase.getInstance().reference.child("Users")
+
+        val timeT = Time(nutrientsX, "Image Url", "BreakFast", quantity, time)
+        val dateD = com.example.mealtracker.userProfie.Date(date, listOf(timeT))
+        val user = UserData(listOf(dateD), "First User")
+        Log.d(
+            "TAG",
+            "writeDateToFirebase: $user" + "------------------------------------------------"
+        )
+        if (uid != null) {
+            Log.d("TAG", "finished: $user" + "------------------------------------------------")
+
+            database.child(uid).setValue(user)
+        }
     }
 
 }
