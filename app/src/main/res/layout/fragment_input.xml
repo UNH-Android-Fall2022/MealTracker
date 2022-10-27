@@ -124,14 +124,15 @@
                 app:startIconDrawable="@drawable/weight">
 
 
-            <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <Button
-                android:id="@+id/containedButton"
+                android:id="@+id/saveToFirebase"
                 style="@style/Widget.MaterialComponents.Button.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
