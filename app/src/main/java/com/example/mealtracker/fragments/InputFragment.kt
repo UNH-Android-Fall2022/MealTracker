@@ -259,15 +259,15 @@ class InputFragment : Fragment() {
         val timeT = Time(nutrientsX, "Image Url", "BreakFast", quantity, time)
         val dateD = com.example.mealtracker.userProfie.Date(date, listOf(timeT))
         val user = UserData(listOf(dateD), "First User")
-        userRef.document(uid).set(user)
+        userRef.document(uid).collection("dates").document(date).collection("time").document(time)
+            .collection("meal").document().collection("nutrients").document().set(nutrientsX)
             .addOnSuccessListener {
                 Toast.makeText(
                     requireActivity(),
                     "Saved Data Successfully",
                     Toast.LENGTH_SHORT
                 ).show()
-            }
-            .addOnFailureListener { exception ->
+            }.addOnFailureListener { exception ->
                 Log.d("error", "exception " + exception.message)
                 Toast.makeText(
                     requireActivity(),
@@ -275,6 +275,23 @@ class InputFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+
+        /* userRef.document(uid).set(user)
+             .addOnSuccessListener {
+                 Toast.makeText(
+                     requireActivity(),
+                     "Saved Data Successfully",
+                     Toast.LENGTH_SHORT
+                 ).show()
+             }
+             .addOnFailureListener { exception ->
+                 Log.d("error", "exception " + exception.message)
+                 Toast.makeText(
+                     requireActivity(),
+                     "exception " + exception.message,
+                     Toast.LENGTH_SHORT
+                 ).show()
+             }*/
     }
 
 }
