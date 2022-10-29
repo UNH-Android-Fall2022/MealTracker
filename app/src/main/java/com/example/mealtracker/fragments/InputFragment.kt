@@ -22,6 +22,7 @@ import com.example.mealtracker.userProfie.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import retrofit2.Call
@@ -197,12 +198,13 @@ class InputFragment : Fragment() {
                 )
                 writeDataToFireStore(
                     foodNutrients!!,
-                    "11-12-32",
-                    "12-32",
-                    "23"
-//                    binding.datePicker.text.toString(),
-//                    binding.timePicker.text.toString(),
-//                    binding.quantity.text.toString()
+//                    "11-12-32",
+                    binding.datePicker.text.toString(),
+//                    "12-33",
+                    binding.timePicker.text.toString(),
+//                    "23",
+                    binding.quantity.text.toString(),
+                    input
                 )
 
             }
@@ -224,7 +226,8 @@ class InputFragment : Fragment() {
         nutrientsX: FoodNutrients,
         date: String,
         time: String,
-        quantity: String
+        quantity: String,
+        mealName: String
     ) {
         authenticaion = FirebaseAuth.getInstance()
 //        val uid = authenticaion.currentUser?.uid
@@ -251,47 +254,38 @@ class InputFragment : Fragment() {
         nutrientsX: FoodNutrients,
         date: String,
         time: String,
-        quantity: String
+        quantity: String,
+        mealName: String
     ) {
-        db = FirebaseFirestore.getInstance()
-        val userRef = db.collection("Users")
         val uid = "OLbgV02I7aQzrxooENPCm2ptGUG2"
+        db = FirebaseFirestore.getInstance()
+        val userRef = db.collection("Users").document(uid).collection("dates").document(date)
+            .collection("time").document(time)
         val timeT = Time(nutrientsX, "Image Url", "BreakFast", quantity, time)
         val dateD = com.example.mealtracker.userProfie.Date(date, listOf(timeT))
         val user = UserData(listOf(dateD), "First User")
-        userRef.document(uid).collection("dates").document(date).collection("time").document(time)
-            .collection("meal").document().collection("nutrients").document().set(nutrientsX)
-            .addOnSuccessListener {
-                Toast.makeText(
-                    requireActivity(),
-                    "Saved Data Successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }.addOnFailureListener { exception ->
-                Log.d("error", "exception " + exception.message)
-                Toast.makeText(
-                    requireActivity(),
-                    "exception " + exception.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-        /* userRef.document(uid).set(user)
-             .addOnSuccessListener {
-                 Toast.makeText(
-                     requireActivity(),
-                     "Saved Data Successfully",
-                     Toast.LENGTH_SHORT
-                 ).show()
-             }
-             .addOnFailureListener { exception ->
-                 Log.d("error", "exception " + exception.message)
-                 Toast.makeText(
-                     requireActivity(),
-                     "exception " + exception.message,
-                     Toast.LENGTH_SHORT
-                 ).show()
-             }*/
+        val data = hashMapOf(
+            "mealname" to mealName,
+            "Type" to "Breakfast",
+            "Quantity" to "130"
+        )
+        userRef.set(data, SetOptions.merge())
+        val mealDocmentRef =
+            userRef.collection("meal").document().collection("nutrients").document().set(nutrientsX)
+                .addOnSuccessListener {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Saved Data Successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }.addOnFailureListener { exception ->
+                    Log.d("error", "exception " + exception.message)
+                    Toast.makeText(
+                        requireActivity(),
+                        "exception " + exception.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
     }
 
 }
