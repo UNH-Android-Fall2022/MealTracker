@@ -1,6 +1,7 @@
 package com.example.mealtracker.fragments
 
 import android.R
+import android.app.Activity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -219,10 +220,13 @@ class InputFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<FoodDetails?>, t: Throwable) {
-                Toast.makeText(
-                    requireActivity(), "error fetching from API" + t.message, Toast.LENGTH_SHORT
-                ).show()
-                Log.d("Main Activity ", "On failure " + t.message)
+                val activity: Activity? = activity
+                if (activity != null && isAdded) {
+                    Toast.makeText(
+                        requireActivity(), "error fetching from API" + t.message, Toast.LENGTH_SHORT
+                    ).show()
+                    Log.d("Main Activity ", "On failure " + t.message)
+                }
             }
         })
 
@@ -241,21 +245,24 @@ class InputFragment : Fragment() {
         authenticaion = FirebaseAuth.getInstance()
 //        val uid = authenticaion.currentUser?.uid
         val uid = "OLbgV02I7aQzrxooENPCm2ptGUG1"
-
         val database = FirebaseDatabase.getInstance().reference.child("Users")
         val timeT = Time(nutrientsX, "Image Url", "BreakFast", quantity, time)
         val dateD = com.example.mealtracker.userProfie.Date(date, listOf(timeT))
         val user = UserData(listOf(dateD), "First User")
 
         database.child(uid).child(date).child(time).setValue(timeT).addOnSuccessListener {
-            Toast.makeText(
-                requireActivity(),
-                "Saved Data Successfully",
-                Toast.LENGTH_SHORT
-            ).show()
+            val activity: Activity? = activity
+            if (activity != null && isAdded) {
+                Toast.makeText(
+                    requireActivity(),
+                    "Saved Data Successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
         }
     }
-    }
+}
 
 
 /* private fun writeDataToFireStore(
