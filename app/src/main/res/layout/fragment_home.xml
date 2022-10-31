@@ -9,19 +9,20 @@
 
     <!--    https://www.youtube.com/watch?v=HLM2_Pd2qE4 -->
     <!-- TODO: Update blank fragment layout -->
-    <ScrollView
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:orientation="vertical">-->
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@color/black"
+            android:layout_height="70dp"
+            android:background="@color/black"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -70,7 +71,7 @@
                         <com.github.mikephil.charting.charts.PieChart
                             android:id="@+id/pieChart"
                             android:layout_width="match_parent"
-                            android:layout_height="300dp" />
+                            android:layout_height="245dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -121,84 +122,89 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <LinearLayout
+                    <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
-                        <androidx.cardview.widget.CardView
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="90dp"
-                            android:layout_margin="10dp"
-                            android:background="#64CD58"
-                            android:gravity="center"
-                            app:cardCornerRadius="8dp"
-                            app:cardElevation="10dp">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                            <LinearLayout
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                android:layout_height="90dp"
+                                android:layout_margin="10dp"
+                                android:background="#64CD58"
+                                android:gravity="center"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="10dp">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Break Fast"
-                                    android:textColor="@color/black" />
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
+                                    android:orientation="vertical">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="90dp"
-                            android:layout_margin="10dp"
-                            android:background="#64CD58"
-                            android:gravity="center"
-                            app:cardCornerRadius="8dp"
-                            app:cardElevation="10dp">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Break Fast"
+                                        android:textColor="@color/black" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
 
-                            <LinearLayout
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                android:layout_height="90dp"
+                                android:layout_margin="10dp"
+                                android:background="#64CD58"
+                                android:gravity="center"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="10dp">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Break Fast"
-                                    android:textColor="@color/black" />
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
+                                    android:orientation="vertical">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="90dp"
-                            android:layout_margin="10dp"
-                            android:background="#64CD58"
-                            android:gravity="center"
-                            app:cardCornerRadius="8dp"
-                            app:cardElevation="10dp">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Break Fast"
+                                        android:textColor="@color/black" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
 
-                            <LinearLayout
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                android:layout_height="90dp"
+                                android:layout_margin="10dp"
+                                android:background="#64CD58"
+                                android:gravity="center"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="10dp">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Break Fast"
-                                    android:textColor="@color/black" />
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Break Fast"
+                                        android:textColor="@color/black" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+                    </ScrollView>
                 </LinearLayout>
             </LinearLayout>
-            <!--        </LinearLayout>-->
+        <!--        </LinearLayout>-->
 
 
-        </LinearLayout>
-    </ScrollView>
-
+    </LinearLayout>
+    <!--    </LinearLayout>-->
+    <!---->
 </RelativeLayout>
 
