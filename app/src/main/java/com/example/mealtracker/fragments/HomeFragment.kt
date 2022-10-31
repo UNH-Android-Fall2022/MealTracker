@@ -17,6 +17,10 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,6 +43,8 @@ class HomeFragment : Fragment() {
     private var currentDate: String = ""
     private lateinit var binding: FragmentHomeBinding
     private val calendar = Calendar.getInstance()
+    private var db = Firebase.firestore
+    private lateinit var authenticaion: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -58,6 +64,7 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_home, container, false)
         setPieChart()
+        getUserData()
         return binding.root
     }
 
@@ -197,4 +204,24 @@ class HomeFragment : Fragment() {
         // loading chart
         pieChart.invalidate()
     }
+
+
+    private fun getDataFromFireStore() {
+
+    }
+
+    private fun getUserData() {
+        db = FirebaseFirestore.getInstance()
+        db.collection("Users").document("OLbgV02I7aQzrxooENPCm2ptGUG2").collection("Date").get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    Log.d("TAG", "${document.id} => ${document.data}")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("TAG", "Error getting documents: ", exception)
+            }
+    }
+
+
 }
