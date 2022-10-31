@@ -17,6 +17,14 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,6 +47,8 @@ class HomeFragment : Fragment() {
     private var currentDate: String = ""
     private lateinit var binding: FragmentHomeBinding
     private val calendar = Calendar.getInstance()
+    private lateinit var db: DatabaseReference
+    private lateinit var authenticaion: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -58,6 +68,7 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_home, container, false)
         setPieChart()
+
         return binding.root
     }
 
@@ -114,6 +125,8 @@ class HomeFragment : Fragment() {
 
     private fun setPieChart() {
         pieChart = binding.pieChart
+        getUserData("hello")
+
 
         // on below line we are setting user percent value,
         // setting description as enabled and offset for pie chart
@@ -159,9 +172,9 @@ class HomeFragment : Fragment() {
         // on below line we are creating array list and
         // adding data to it to display in pie chart
         val entries: ArrayList<PieEntry> = ArrayList()
-        entries.add(PieEntry(70f))
+        entries.add(PieEntry(90f))
+        entries.add(PieEntry(8f))
         entries.add(PieEntry(20f))
-        entries.add(PieEntry(10f))
 
         // on below line we are setting pie data set
         val dataSet = PieDataSet(entries, "Mobile OS")
@@ -197,4 +210,104 @@ class HomeFragment : Fragment() {
         // loading chart
         pieChart.invalidate()
     }
+
+
+    private fun getDataFromFireStore() {
+
+    }
+
+    private fun getUserData(date: String) {
+        db = Firebase.database.reference
+        val dummyDate = "14-10-2022"
+        val uid = "OLbgV02I7aQzrxooENPCm2ptGUG1"
+        /*db.child("Users").child(uid).get()
+            .addOnSuccessListener { result ->
+                Log.d("TAG getting details from firebase", "${result.child("25-10-2022").value}")
+            }
+            .addOnFailureListener { exception ->
+                Log.d("TAG", "Error getting documents: ", exception)
+            }*/
+        val myRef = db.child("Users").child(uid)
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var fiber = 0
+                var protein = 0
+                var fat = 0
+                var calories = 0
+                var cholestrol = 0
+
+                for (dates in snapshot.children) {
+
+                    if (dates.key == dummyDate) {
+                        for (times in dates.children) {
+                            Log.d("Inside TIMES", "${times.value}")
+
+                            val nutrients = times.child("foodNutrients")
+                            Log.d("Inside Nutrients", "${nutrients.value}")
+                            cholestrol += nutrients.child("chocdf").getValue<Int>()!!
+                            calories += nutrients.child("enerc_KCAL").getValue<Int>()!!
+                            fat += nutrients.child("fat").getValue<Int>()!!
+                            fiber += nutrients.child("fibtg").getValue<Int>()!!
+                            protein += nutrients.child("procnt").getValue<Int>()!!
+                        }
+                    }
+                    Log.d(
+                        "TOTAL NUTRIENTS",
+                        "onDataChange: $calories $fiber $protein $fat $cholestrol"
+                    )
+                }
+                if (isAdded)// This {@link androidx.fragment.app.Fragment} class method is responsible to check if the your view is attached to the Activity or not
+                {
+                    val entries: ArrayList<PieEntry> = ArrayList()
+                    entries.add(PieEntry(fiber.toFloat()))
+                    entries.add(PieEntry(protein.toFloat()))
+                    entries.add(PieEntry(fat.toFloat()))
+                    entries.add(PieEntry(calories.toFloat()))
+                    entries.add(PieEntry(cholestrol.toFloat()))
+
+                    val dataSet = PieDataSet(entries, "DAILY Intake")
+                    dataSet.setDrawIcons(false)
+
+                    // on below line we are setting slice for pie
+                    dataSet.sliceSpace = 6f
+                    dataSet.iconsOffset = MPPointF(0f, 40f)
+                    dataSet.selectionShift = 10f
+
+                    // add a lot of colors to list
+                    val colors: ArrayList<Int> = ArrayList()
+                    colors.add(resources.getColor(R.color.teal_200))
+                    colors.add(resources.getColor(R.color.yellow))
+                    colors.add(resources.getColor(R.color.red))
+                    colors.add(resources.getColor(R.color.material_dynamic_primary70))
+                    colors.add(resources.getColor(R.color.purple_200))
+
+
+                    // on below line we are setting colors.
+                    dataSet.colors = colors
+
+                    // on below line we are setting pie data set
+                    val data = PieData(dataSet)
+                    data.setValueFormatter(PercentFormatter())
+                    data.setValueTextSize(15f)
+                    data.setValueTypeface(Typeface.DEFAULT_BOLD)
+                    data.setValueTextColor(Color.WHITE)
+                    pieChart.data = data
+
+                    // undo all highlights
+                    pieChart.highlightValues(null)
+
+                    // loading chart
+                    pieChart.invalidate()
+                }
+
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+    }
+
+
 }
