@@ -18,6 +18,7 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:scrollIndicators="left"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
