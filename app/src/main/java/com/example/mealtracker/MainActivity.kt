@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.mealtracker.databinding.ActivityMainBinding
 import com.example.mealtracker.fragments.HomeFragment
 import com.example.mealtracker.fragments.InputFragment
+import com.example.mealtracker.fragments.WeekFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val homeFragment = HomeFragment()
         val inputFragment = InputFragment()
+        val weekFragment = WeekFragment()
 //        bottomnavbar = binding.bottomNav
         bottomnavbar = findViewById<BottomNavigationView>(R.id.bottomNav)
 
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                     setTheFragment(homeFragment)
                 }
                 R.id.weekly -> {
-//                    setTheFragment(inputFragment)
+                    setTheFragment(weekFragment)
                 }
                 R.id.monthly -> {
 //                    setTheFragment(inputFragment)
