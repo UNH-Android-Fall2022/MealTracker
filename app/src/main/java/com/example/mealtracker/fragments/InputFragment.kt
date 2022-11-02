@@ -206,17 +206,6 @@ class InputFragment : Fragment() {
                     input
                 )
 
-                /* writeDataToFireStore(
-                     foodNutrients!!,
- //                    "11-12-32",
-                     binding.datePicker.text.toString(),
- //                    "12-33",
-                     binding.timePicker.text.toString(),
- //                    "23",
-                     binding.quantity.text.toString(),
-                     input
-                 )*/
-
             }
 
             override fun onFailure(call: Call<FoodDetails?>, t: Throwable) {
@@ -264,45 +253,6 @@ class InputFragment : Fragment() {
     }
 }
 
-
-/* private fun writeDataToFireStore(
-     nutrientsX: FoodNutrients,
-     date: String,
-     time: String,
-     quantity: String,
-     mealName: String
- ) {
-     val uid = "OLbgV02I7aQzrxooENPCm2ptGUG2"
-     db = FirebaseFirestore.getInstance()
-     val userRef = db.collection("Users").document(uid).collection("Date").document(date)
-         .collection("time").document(time)
-     val timeT = Time(nutrientsX, "Image Url", "BreakFast", quantity, time)
-//        val dateD = com.example.mealtracker.userProfie.Date(date, listOf(timeT))
-//        val user = UserData(listOf(dateD), "First User")
-     val data = hashMapOf(
-         "mealname" to mealName,
-         "Type" to "Breakfast",
-         "Quantity" to "130"
-     )
-     userRef.set(data, SetOptions.merge())
-     val mealDocmentRef =
-         userRef.collection("FoodNutrients").document().set(nutrientsX)
-             .addOnSuccessListener {
-                 Toast.makeText(
-                     requireActivity(),
-                     "Saved Data Successfully",
-                     Toast.LENGTH_SHORT
-                 ).show()
-             }.addOnFailureListener { exception ->
-                 Log.d("error", "exception " + exception.message)
-                 Toast.makeText(
-                     requireActivity(),
-                     "exception " + exception.message,
-                     Toast.LENGTH_SHORT
-                 ).show()
-             }
- }
-*/
 
 
 

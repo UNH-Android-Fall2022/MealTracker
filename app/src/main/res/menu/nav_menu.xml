@@ -4,21 +4,27 @@
     <item
         android:id="@+id/today"
         android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
         android:title="Home" />
 
     <item
         android:id="@+id/weekly"
         android:enabled="true"
+        android:icon="@drawable/ic_baseline_next_week_24"
         android:title="Weekly" />
 
     <item
         android:id="@+id/monthly"
         android:enabled="true"
-        android:title="Weekly" />
+        android:icon="@drawable/ic_baseline_calendar_month_24"
+
+        android:title="Monthly" />
 
     <item
         android:id="@+id/add"
         android:enabled="true"
+        android:icon="@drawable/ic_baseline_add_24"
+
         android:title="ADD" />
 
 </menu>
