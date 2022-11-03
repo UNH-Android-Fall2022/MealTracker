@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         bottomnavbar = findViewById<BottomNavigationView>(R.id.bottomNav)
 
         setTheFragment(homeFragment)
-
+//Navigation between fragments from bottom navigation bar
         bottomnavbar.setOnItemSelectedListener {
             Log.d("Inside the Today", "Main Activity*********************************************")
             when (it.itemId) {
@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //    Layout inflator for creating bottom navigation bar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.nav_menu, menu)

@@ -58,7 +58,6 @@ class LoginActivity : AppCompatActivity() {
                                 }
 
 //                                Logging into the main activity
-
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 intent.flags =
                                     Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -79,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-
+// Showing registration activity
         binding.signUp.setOnClickListener {
             val intent = Intent(this@LoginActivity, Registration::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

@@ -9,6 +9,7 @@ import androidx.fragment.app.setFragmentResult
 import java.text.SimpleDateFormat
 import java.util.*
 
+// Time picker dialogue to show timepicker
 class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
     private val calendar = Calendar.getInstance()
 

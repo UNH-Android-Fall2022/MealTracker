@@ -125,7 +125,7 @@ class HomeFragment : Fragment() {
 
     private fun setPieChart() {
         pieChart = binding.pieChart
-        getUserData("hello")
+        getDataFromFireBase("hello")
 
 
         // on below line we are setting user percent value,
@@ -212,11 +212,7 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun getDataFromFireStore() {
-
-    }
-
-    private fun getUserData(date: String) {
+    private fun getDataFromFireBase(date: String) {
         db = Firebase.database.reference
         val dummyDate = "14-10-2022"
         val uid = "OLbgV02I7aQzrxooENPCm2ptGUG1"
@@ -241,7 +237,6 @@ class HomeFragment : Fragment() {
                     if (dates.key == dummyDate) {
                         for (times in dates.children) {
                             Log.d("Inside TIMES", "${times.value}")
-
                             val nutrients = times.child("foodNutrients")
                             Log.d("Inside Nutrients", "${nutrients.value}")
                             cholestrol += nutrients.child("chocdf").getValue<Int>()!!
@@ -299,8 +294,6 @@ class HomeFragment : Fragment() {
                     // loading chart
                     pieChart.invalidate()
                 }
-
-
             }
 
             override fun onCancelled(error: DatabaseError) {

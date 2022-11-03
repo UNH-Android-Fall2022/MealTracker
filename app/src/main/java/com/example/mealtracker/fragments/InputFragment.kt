@@ -67,20 +67,23 @@ class InputFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        Showing date picker in the input window
         binding.datePicker.setOnClickListener {
             datePicker()
         }
 
+//        Showing Time picker in the input window
         binding.timePicker.setOnClickListener {
             timePicker()
         }
 
+//        Show drop down dialogue to show suggestions based on user input
         binding.findSuggestions.setOnClickListener {
             showDropDown()
         }
 
+//        Save all input details for the food after getting the nutrition data from EDEMAN api
         binding.saveToFirebase.setOnClickListener {
-
             getFoodDetails(binding.searchBox.text.toString())
 
         }
@@ -177,6 +180,8 @@ class InputFragment : Fragment() {
 
     private fun getFoodDetails(input: String): FoodNutrients? {
         var foodNutrients: FoodNutrients? = null
+
+//        Calling the EDEMAN api to get the nutrition data based on the user input
         val retroFitBuilder =
             Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL)
                 .build().create(ApiInterface::class.java)
@@ -195,6 +200,8 @@ class InputFragment : Fragment() {
                     nutrients.PROCNT.toDouble(),
                     nutrients.ENERC_KCAL
                 )
+
+//                Writing all the details user entered with nutrition data into firebase
                 writeDateToFirebase(
                     foodNutrients!!,
 //                    "11-12-32",
@@ -223,7 +230,7 @@ class InputFragment : Fragment() {
         return foodNutrients
     }
 
-
+    //Function to write data to firebase
     private fun writeDateToFirebase(
         nutrientsX: FoodNutrients,
         date: String,
