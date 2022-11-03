@@ -94,6 +94,7 @@ class Registration : AppCompatActivity() {
             }
         }
 
+//Showing login activity
         binding.signIn.setOnClickListener {
 
             val intent = Intent(this@Registration, LoginActivity::class.java)
