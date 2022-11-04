@@ -181,7 +181,7 @@ class InputFragment : Fragment() {
     private fun getFoodDetails(input: String): FoodNutrients? {
         var foodNutrients: FoodNutrients? = null
 
-//        Calling the EDEMAN api to get the nutrition data based on the user input
+//        Calling the EDEMAM api to get the nutrition data based on the user input
         val retroFitBuilder =
             Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL)
                 .build().create(ApiInterface::class.java)
