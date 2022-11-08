@@ -34,7 +34,9 @@
                 android:layout_height="150dp"
                 android:layout_margin="10dp"
                 android:id="@+id/imageView"
-                android:background="@color/yellow"
+                android:adjustViewBounds="true"
+                android:background="#F3388733"
+                android:scaleType="centerInside"
                 android:contentDescription="TODO" />
 
             <!--            <TextView-->
@@ -66,7 +68,8 @@
                         android:id="@+id/searchBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null" />
+                        android:background="@null"
+                        android:textColorHint="#757575" />
 
                     <Button
                         android:id="@+id/findSuggestions"
@@ -78,6 +81,7 @@
                         android:layout_marginEnd="0dp"
                         android:layout_marginBottom="0dp"
                         android:text="Search"
+                        android:textColor="#212121"
                         app:icon="@drawable/ic_baseline_search_24" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,9 +103,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/datePicker"
-                    android:focusable="false"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:textColorHint="#757575" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -118,9 +123,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/timePicker"
-                    android:focusable="false"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:textColorHint="#757575" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -139,7 +145,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/quantity"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColorHint="#757575" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
