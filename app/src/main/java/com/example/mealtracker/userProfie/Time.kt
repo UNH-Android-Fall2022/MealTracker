@@ -1,9 +1,9 @@
 package com.example.mealtracker.userProfie
 
 data class Time(
-    val foodNutrients: FoodNutrients,
-    val image: String,
-    val mealName: String,
-    val quantity: String,
-    val time: String
+    val foodNutrients: FoodNutrients? = null,
+    val image: String? = null,
+    val mealName: String? = null,
+    val quantity: String? = null,
+    val time: String? = null
 )
