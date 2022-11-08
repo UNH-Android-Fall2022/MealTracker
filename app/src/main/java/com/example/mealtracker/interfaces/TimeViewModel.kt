@@ -14,7 +14,7 @@ class TimeViewModel : ViewModel() {
 
     init {
         repository = DataRepository().getInstance()
-        repository.loadData(_allTimes, "a", "")
+        repository.loadData(_allTimes, "14-10-2022", "OLbgV02I7aQzrxooENPCm2ptGUG1")
     }
 
 }

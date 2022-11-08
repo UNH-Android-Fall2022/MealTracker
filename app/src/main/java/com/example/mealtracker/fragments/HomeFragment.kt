@@ -8,8 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mealtracker.R
+import com.example.mealtracker.adapter.MyAdapter
 import com.example.mealtracker.databinding.FragmentHomeBinding
+import com.example.mealtracker.interfaces.TimeViewModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -39,8 +44,14 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+private lateinit var viewModel: TimeViewModel
+private lateinit var timeRecyclerView: RecyclerView
+lateinit var adapter: MyAdapter
+
 class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
+
     private var param1: String? = null
     private var param2: String? = null
     lateinit var pieChart: PieChart
@@ -118,6 +129,19 @@ class HomeFragment : Fragment() {
             }
             datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
         }
+
+        timeRecyclerView = view.findViewById(R.id.recyclerViewHome)
+        timeRecyclerView.layoutManager = LinearLayoutManager(context)
+        timeRecyclerView.setHasFixedSize(true)
+        adapter = MyAdapter()
+        timeRecyclerView.adapter = adapter
+        viewModel = ViewModelProvider(this).get(TimeViewModel::class.java)
+
+        viewModel.allTimes.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            adapter.updateTimeList(it)
+        })
+
+
     }
 
 
