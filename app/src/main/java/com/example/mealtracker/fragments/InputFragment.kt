@@ -4,6 +4,7 @@ import android.R
 import android.app.Activity
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
+import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
@@ -26,7 +27,6 @@ import com.example.mealtracker.foodDetails.Parsed
 import com.example.mealtracker.interfaces.ApiInterface
 import com.example.mealtracker.userProfie.FoodNutrients
 import com.example.mealtracker.userProfie.Time
-import com.example.mealtracker.userProfie.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -47,14 +47,14 @@ class InputFragment : Fragment() {
     private var currentDate: String = ""
     private lateinit var binding: FragmentInputBinding
     private var URL: String = "https://api.edamam.com/"
+    private lateinit var dialog: Dialog
 
     //    private var storageRef = Firebase.storage.reference;
     private lateinit var authenticaion: FirebaseAuth
     lateinit var imageBitMap: Bitmap
     private lateinit var imageUri: Uri
 
-//    private lateinit var databaseReference: DatabaseReference
-
+    //    private lateinit var databaseReference: DatabaseReference
     var suggestions: List<String> = ArrayList<String>()
     var adapter: ArrayAdapter<String>? = null
 //    var autocomplete  =null
@@ -181,6 +181,12 @@ class InputFragment : Fragment() {
                     myStringBuilder.append(myData)
                     myStringBuilder.append("\n")
                 }
+
+                Toast.makeText(
+                    requireActivity(),
+                    "Suggestions fetched successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
                 Log.d("Inside InputFragment", myStringBuilder.toString())
             }
 
@@ -223,6 +229,8 @@ class InputFragment : Fragment() {
                     )
 
 //                Writing all the details user entered with nutrition data into firebase
+                    binding.llprogressBar.visibility = View.VISIBLE
+
                     writeDateToFirebase(
                         foodNutrients!!,
 //                    "11-12-32",
@@ -233,6 +241,9 @@ class InputFragment : Fragment() {
                         binding.quantity.text.toString(),
                         input
                     )
+
+                    binding.llprogressBar.visibility = View.GONE
+
 
                 }
 
@@ -265,24 +276,39 @@ class InputFragment : Fragment() {
 //        val uid = authenticaion.currentUser?.uid
         val uid = "OLbgV02I7aQzrxooENPCm2ptGUG1"
         val database = FirebaseDatabase.getInstance().reference.child("Users")
-        val timeT = Time(nutrientsX, "Image Url", "BreakFast", quantity, time)
-        val dateD = com.example.mealtracker.userProfie.Date(date, listOf(timeT))
-        val user = UserData(listOf(dateD), "First User")
-        val refStorage = FirebaseStorage.getInstance().getReference("Images")
+        val refStorage =
+            FirebaseStorage.getInstance().getReference("Images").child(uid).child(date).child(time)
         val baos = ByteArrayOutputStream()
         imageBitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val img = baos.toByteArray()
-        refStorage.putBytes(img)
-        database.child(uid).child(date).child(time).setValue(timeT).addOnSuccessListener {
-            val activity: Activity? = activity
-            if (activity != null && isAdded) {
-                Toast.makeText(
-                    requireActivity(),
-                    "Saved Data Successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
+        val uploadTask = refStorage.putBytes(img)
+        val urlTask = uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
+                }
+            }
+            refStorage.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val downloadUri = task.result
+                val timeT = Time(nutrientsX, downloadUri.toString(), "BreakFast", quantity, time)
+                database.child(uid).child(date).child(time).setValue(timeT).addOnSuccessListener {
+                    val activity: Activity? = activity
+                    if (activity != null && isAdded) {
+                        Toast.makeText(
+                            requireActivity(),
+                            "Saved Data Successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } else {
+
             }
         }
+
+
     }
 
     private fun dispatchTakePictureIntent() {
@@ -307,6 +333,12 @@ class InputFragment : Fragment() {
             }
         }
     }
+
+//    private fun showProgressBar(){
+//        dialog= Dialog(activity!!)
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//        dialog.setContentView(R.lay)
+//    }
 }
 
 
