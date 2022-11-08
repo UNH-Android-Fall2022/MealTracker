@@ -2,10 +2,12 @@ package com.example.mealtracker.fragments
 
 import android.R
 import android.app.Activity
+import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
@@ -27,13 +29,13 @@ import com.example.mealtracker.userProfie.Time
 import com.example.mealtracker.userProfie.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,8 +47,12 @@ class InputFragment : Fragment() {
     private var currentDate: String = ""
     private lateinit var binding: FragmentInputBinding
     private var URL: String = "https://api.edamam.com/"
-    private var db = Firebase.firestore
+
+    //    private var storageRef = Firebase.storage.reference;
     private lateinit var authenticaion: FirebaseAuth
+    lateinit var imageBitMap: Bitmap
+    private lateinit var imageUri: Uri
+
 //    private lateinit var databaseReference: DatabaseReference
 
     var suggestions: List<String> = ArrayList<String>()
@@ -196,45 +202,52 @@ class InputFragment : Fragment() {
             Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL)
                 .build().create(ApiInterface::class.java)
         val retoFitData = retroFitBuilder.getFoodDetails(input)
-        retoFitData.enqueue(object : Callback<FoodDetails?> {
-            override fun onResponse(call: Call<FoodDetails?>, response: Response<FoodDetails?>) {
-                val responseBody = response.body()!!
-                val parsed: List<Parsed> = responseBody.parsed
-                val food: FoodX = parsed[0].food
-                val nutrients: NutrientsX = food.nutrients
-                Log.d("Inside the fragment nutrients data", nutrients.toString())
-                foodNutrients = FoodNutrients(
-                    nutrients.CHOCDF.toDouble(),
-                    nutrients.FAT.toDouble(),
-                    nutrients.FIBTG.toDouble(),
-                    nutrients.PROCNT.toDouble(),
-                    nutrients.ENERC_KCAL
-                )
+        val storageReference =
+
+            retoFitData.enqueue(object : Callback<FoodDetails?> {
+                override fun onResponse(
+                    call: Call<FoodDetails?>,
+                    response: Response<FoodDetails?>
+                ) {
+                    val responseBody = response.body()!!
+                    val parsed: List<Parsed> = responseBody.parsed
+                    val food: FoodX = parsed[0].food
+                    val nutrients: NutrientsX = food.nutrients
+                    Log.d("Inside the fragment nutrients data", nutrients.toString())
+                    foodNutrients = FoodNutrients(
+                        nutrients.CHOCDF.toDouble(),
+                        nutrients.FAT.toDouble(),
+                        nutrients.FIBTG.toDouble(),
+                        nutrients.PROCNT.toDouble(),
+                        nutrients.ENERC_KCAL
+                    )
 
 //                Writing all the details user entered with nutrition data into firebase
-                writeDateToFirebase(
-                    foodNutrients!!,
+                    writeDateToFirebase(
+                        foodNutrients!!,
 //                    "11-12-32",
-                    binding.datePicker.text.toString(),
+                        binding.datePicker.text.toString(),
 //                    "12-33",
-                    binding.timePicker.text.toString(),
+                        binding.timePicker.text.toString(),
 //                    "23",
-                    binding.quantity.text.toString(),
-                    input
-                )
+                        binding.quantity.text.toString(),
+                        input
+                    )
 
-            }
-
-            override fun onFailure(call: Call<FoodDetails?>, t: Throwable) {
-                val activity: Activity? = activity
-                if (activity != null && isAdded) {
-                    Toast.makeText(
-                        requireActivity(), "error fetching from API" + t.message, Toast.LENGTH_SHORT
-                    ).show()
-                    Log.d("Main Activity ", "On failure " + t.message)
                 }
-            }
-        })
+
+                override fun onFailure(call: Call<FoodDetails?>, t: Throwable) {
+                    val activity: Activity? = activity
+                    if (activity != null && isAdded) {
+                        Toast.makeText(
+                            requireActivity(),
+                            "error fetching from API" + t.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.d("Main Activity ", "On failure " + t.message)
+                    }
+                }
+            })
 
         Log.d("Outside the fragment", foodNutrients.toString())
         return foodNutrients
@@ -255,7 +268,11 @@ class InputFragment : Fragment() {
         val timeT = Time(nutrientsX, "Image Url", "BreakFast", quantity, time)
         val dateD = com.example.mealtracker.userProfie.Date(date, listOf(timeT))
         val user = UserData(listOf(dateD), "First User")
-
+        val refStorage = FirebaseStorage.getInstance().getReference("Images")
+        val baos = ByteArrayOutputStream()
+        imageBitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val img = baos.toByteArray()
+        refStorage.putBytes(img)
         database.child(uid).child(date).child(time).setValue(timeT).addOnSuccessListener {
             val activity: Activity? = activity
             if (activity != null && isAdded) {
@@ -265,7 +282,6 @@ class InputFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
         }
     }
 
@@ -281,9 +297,14 @@ class InputFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            binding.imageView.setImageBitmap(imageBitmap)
+        if (resultCode != RESULT_CANCELED) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                imageBitMap = data?.extras?.get("data") as Bitmap
+//                imageUri = data?.data!!
+
+                binding.imageView.setImageBitmap(imageBitMap)
+//                binding.imageView.setImageURI(imageUri)
+            }
         }
     }
 }
