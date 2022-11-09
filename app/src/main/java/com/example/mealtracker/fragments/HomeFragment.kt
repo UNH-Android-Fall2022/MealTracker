@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mealtracker.R
 import com.example.mealtracker.adapter.MyAdapter
 import com.example.mealtracker.databinding.FragmentHomeBinding
+import com.example.mealtracker.interfaces.MyViewModelFactory
 import com.example.mealtracker.interfaces.TimeViewModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
@@ -135,7 +136,10 @@ class HomeFragment : Fragment() {
         timeRecyclerView.setHasFixedSize(true)
         adapter = MyAdapter()
         timeRecyclerView.adapter = adapter
-        viewModel = ViewModelProvider(this).get(TimeViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            MyViewModelFactory("10-11-2022", "OLbgV02I7aQzrxooENPCm2ptGUG1")
+        ).get(TimeViewModel::class.java)
 
         viewModel.allTimes.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.updateTimeList(it)

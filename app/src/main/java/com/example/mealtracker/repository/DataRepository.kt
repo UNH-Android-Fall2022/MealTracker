@@ -24,7 +24,6 @@ class DataRepository {
         databaseReference.child(userId).child(date)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-
                     try {
                         val _timelist: List<Time> = snapshot.children.map { dataSnapshot ->
                             dataSnapshot.getValue(Time::class.java)!!
@@ -35,7 +34,6 @@ class DataRepository {
 
                     }
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     TODO("Not yet implemented")
                 }
