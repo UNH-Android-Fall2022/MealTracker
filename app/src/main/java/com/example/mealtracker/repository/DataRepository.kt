@@ -26,7 +26,6 @@ class DataRepository {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
                     try {
-
                         val _timelist: List<Time> = snapshot.children.map { dataSnapshot ->
                             dataSnapshot.getValue(Time::class.java)!!
                         }
