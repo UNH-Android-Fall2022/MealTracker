@@ -229,7 +229,6 @@ class InputFragment : Fragment() {
                     )
 
 //                Writing all the details user entered with nutrition data into firebase
-                    binding.llprogressBar.visibility = View.VISIBLE
 
                     writeDateToFirebase(
                         foodNutrients!!,
@@ -241,8 +240,6 @@ class InputFragment : Fragment() {
                         binding.quantity.text.toString(),
                         input
                     )
-
-                    binding.llprogressBar.visibility = View.GONE
 
 
                 }
@@ -292,7 +289,8 @@ class InputFragment : Fragment() {
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val downloadUri = task.result
-                val timeT = Time(nutrientsX, downloadUri.toString(), "BreakFast", quantity, time)
+                val mealNameUI = binding.mealName.text.toString()
+                val timeT = Time(nutrientsX, downloadUri.toString(), mealNameUI, quantity, time)
                 database.child(uid).child(date).child(time).setValue(timeT).addOnSuccessListener {
                     val activity: Activity? = activity
                     if (activity != null && isAdded) {

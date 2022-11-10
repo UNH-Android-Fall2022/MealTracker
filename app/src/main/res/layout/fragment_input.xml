@@ -6,15 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.InputFragment">
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/llprogressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:visibility="visible" />
-
     <ScrollView
-
 
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -24,33 +16,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="40dp"
             android:gravity="center"
             android:orientation="vertical">
 
-
             <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="160dp"
                 android:layout_height="150dp"
                 android:layout_margin="10dp"
-                android:id="@+id/imageView"
                 android:adjustViewBounds="true"
                 android:background="#F3388733"
-                android:scaleType="centerCrop"
-                android:contentDescription="TODO" />
-
-            <!--            <TextView-->
-            <!--                android:id="@+id/datePicker"-->
-            <!--                android:layout_width="216dp"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_margin="10dp"-->
-            <!--                android:hint="Date"-->
-            <!--                app:hintTextColor="@color/black"-->
-            <!--                app:startIconContentDescription="Enter Date"-->
-            <!--                app:startIconDrawable="@drawable/ic_baseline_calendar_month_24"-->
-            <!--                >-->
-            <!--            </TextView>-->
-
+                android:contentDescription="TODO"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -87,49 +65,72 @@
 
             </LinearLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="216dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:hint="Date"
-                app:hintTextColor="@color/black"
-                app:startIconDrawable="@drawable/ic_baseline_calendar_month_24">
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="Meal Name">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/datePicker"
+                    android:id="@+id/mealName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:textColorHint="#757575" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="216dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:hint="Time"
-                app:startIconDrawable="@drawable/ic_baseline_access_time_24">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/timePicker"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:textColorHint="#757575" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
+            <LinearLayout
+                android:layout_width="249dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Date"
+                    app:hintTextColor="@color/black"
+                    app:startIconDrawable="@drawable/ic_baseline_calendar_month_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/datePicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:textColorHint="#757575" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Time"
+                    app:startIconDrawable="@drawable/ic_baseline_access_time_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/timePicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:textColorHint="#757575" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
