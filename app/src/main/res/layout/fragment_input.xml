@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
+
     tools:context=".fragments.InputFragment">
 
     <ScrollView
@@ -26,18 +28,20 @@
                 android:layout_height="150dp"
                 android:layout_margin="10dp"
                 android:adjustViewBounds="true"
-                android:background="#F3388733"
                 android:contentDescription="TODO"
+                android:background="@drawable/round_outline"
+                android:clipToOutline="true"
+                android:src="@drawable/camer_logo"
                 android:scaleType="centerCrop" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="216dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Search"
                     app:startIconDrawable="@drawable/ic_baseline_search_24">
@@ -46,7 +50,7 @@
                         android:id="@+id/searchBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:background="@color/white"
                         android:textColorHint="#757575" />
 
                     <Button
@@ -59,15 +63,14 @@
                         android:layout_marginEnd="0dp"
                         android:layout_marginBottom="0dp"
                         android:text="Search"
-                        android:textColor="#212121"
-                        app:icon="@drawable/ic_baseline_search_24" />
+                        android:textColor="#212121" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="216dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:focusable="true"
@@ -78,22 +81,23 @@
                     android:id="@+id/mealName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:textColorHint="#757575" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <LinearLayout
-                android:layout_width="249dp"
+                android:layout_width="280dp"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_weight="1"
+                    android:layout_marginEnd="5dp"
                     android:clickable="false"
                     android:cursorVisible="false"
                     android:focusable="false"
@@ -107,15 +111,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
+                        android:background="@color/white"
+
                         android:textColorHint="#757575" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_weight="1"
+                    android:layout_marginStart="5dp"
                     android:clickable="false"
                     android:cursorVisible="false"
                     android:focusable="false"
@@ -128,13 +134,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
+                        android:background="@color/white"
+
                         android:textColorHint="#757575" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="216dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:focusable="true"
@@ -147,6 +155,7 @@
                     android:id="@+id/quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:textColorHint="#757575" />
             </com.google.android.material.textfield.TextInputLayout>
 

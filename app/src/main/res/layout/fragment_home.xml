@@ -16,12 +16,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="@color/black"
+            android:background="#80CBC4"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -63,7 +64,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#AE5555"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -75,7 +75,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="5dp"
                         android:orientation="vertical"
                         android:weightSum="2">
 
@@ -165,83 +165,6 @@
 
 
                 </LinearLayout>
-
-                <!--                <ScrollView-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content">-->
-
-                <!--                    <LinearLayout-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:orientation="vertical">-->
-
-                <!--                        <androidx.cardview.widget.CardView-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="90dp"-->
-                <!--                            android:layout_margin="10dp"-->
-                <!--                            android:background="#64CD58"-->
-                <!--                            android:gravity="center"-->
-                <!--                            app:cardCornerRadius="8dp"-->
-                <!--                            app:cardElevation="10dp">-->
-
-                <!--                            <LinearLayout-->
-                <!--                                android:layout_width="match_parent"-->
-                <!--                                android:layout_height="wrap_content"-->
-                <!--                                android:orientation="vertical">-->
-
-                <!--                                <TextView-->
-                <!--                                    android:layout_width="wrap_content"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:text="Break Fast"-->
-                <!--                                    android:textColor="@color/black" />-->
-                <!--                            </LinearLayout>-->
-                <!--                        </androidx.cardview.widget.CardView>-->
-
-                <!--                        <androidx.cardview.widget.CardView-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="90dp"-->
-                <!--                            android:layout_margin="10dp"-->
-                <!--                            android:background="#64CD58"-->
-                <!--                            android:gravity="center"-->
-                <!--                            app:cardCornerRadius="8dp"-->
-                <!--                            app:cardElevation="10dp">-->
-
-                <!--                            <LinearLayout-->
-                <!--                                android:layout_width="match_parent"-->
-                <!--                                android:layout_height="wrap_content"-->
-                <!--                                android:orientation="vertical">-->
-
-                <!--                                <TextView-->
-                <!--                                    android:layout_width="wrap_content"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:text="Break Fast"-->
-                <!--                                    android:textColor="@color/black" />-->
-                <!--                            </LinearLayout>-->
-                <!--                        </androidx.cardview.widget.CardView>-->
-
-                <!--                        <androidx.cardview.widget.CardView-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="90dp"-->
-                <!--                            android:layout_margin="10dp"-->
-                <!--                            android:background="#64CD58"-->
-                <!--                            android:gravity="center"-->
-                <!--                            app:cardCornerRadius="8dp"-->
-                <!--                            app:cardElevation="10dp">-->
-
-                <!--                            <LinearLayout-->
-                <!--                                android:layout_width="match_parent"-->
-                <!--                                android:layout_height="wrap_content"-->
-                <!--                                android:orientation="vertical">-->
-
-                <!--                                <TextView-->
-                <!--                                    android:layout_width="wrap_content"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:text="Break Fast"-->
-                <!--                                    android:textColor="@color/black" />-->
-                <!--                            </LinearLayout>-->
-                <!--                        </androidx.cardview.widget.CardView>-->
-                <!--                    </LinearLayout>-->
-                <!--                </ScrollView>-->
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewHome"
