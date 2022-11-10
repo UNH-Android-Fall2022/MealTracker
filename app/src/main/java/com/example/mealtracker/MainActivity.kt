@@ -13,6 +13,7 @@ import com.example.mealtracker.fragments.InputFragment
 import com.example.mealtracker.fragments.MonthFragment
 import com.example.mealtracker.fragments.WeekFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,9 +21,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var USER_ID: String
     private lateinit var bottomnavbar: BottomNavigationView
     private lateinit var binding: ActivityMainBinding
+    private lateinit var authenticaion: FirebaseAuth
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        authenticaion = FirebaseAuth.getInstance()
+        USER_ID = authenticaion.currentUser?.uid.toString()
 //        supportActionBar?.hide()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main)
@@ -35,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         val monthFragment = MonthFragment()
 //        bottomnavbar = binding.bottomNav
         bottomnavbar = findViewById<BottomNavigationView>(R.id.bottomNav)
-
         setTheFragment(homeFragment)
 //Navigation between fragments from bottom navigation bar
         bottomnavbar.setOnItemSelectedListener {
@@ -60,6 +64,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setTheFragment(fragment: Fragment) {
 
+        val mBundle = Bundle()
+        mBundle.putString("UserId", USER_ID)
+        fragment.arguments = mBundle
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment_container, fragment).commit()
         }

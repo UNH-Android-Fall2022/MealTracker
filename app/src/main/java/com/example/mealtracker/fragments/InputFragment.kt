@@ -50,9 +50,11 @@ class InputFragment : Fragment() {
     private lateinit var dialog: Dialog
 
     //    private var storageRef = Firebase.storage.reference;
-    private lateinit var authenticaion: FirebaseAuth
     var imageBitMap: Bitmap? = null
     private lateinit var imageUri: Uri
+    private lateinit var userId: String
+    private lateinit var authenticaion: FirebaseAuth
+
 
     //    private lateinit var databaseReference: DatabaseReference
     var suggestions: List<String> = ArrayList<String>()
@@ -65,6 +67,8 @@ class InputFragment : Fragment() {
         arguments?.let {
 
         }
+        authenticaion = FirebaseAuth.getInstance()
+        userId = authenticaion.currentUser?.uid.toString()
         binding = FragmentInputBinding.inflate(layoutInflater)
     }
 
@@ -270,9 +274,9 @@ class InputFragment : Fragment() {
         quantity: String,
         imageUrl: String
     ) {
-        authenticaion = FirebaseAuth.getInstance()
-//        val uid = authenticaion.currentUser?.uid
-        val uid = "OLbgV02I7aQzrxooENPCm2ptGUG1"
+//        authenticaion = FirebaseAuth.getInstance()
+
+        val uid = userId
         val database = FirebaseDatabase.getInstance().reference.child("Users")
         val refStorage =
             FirebaseStorage.getInstance().getReference("Images").child(uid).child(date).child(time)
