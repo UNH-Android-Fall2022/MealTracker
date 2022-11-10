@@ -8,8 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mealtracker.R
+import com.example.mealtracker.adapter.MyAdapter
 import com.example.mealtracker.databinding.FragmentHomeBinding
+import com.example.mealtracker.interfaces.MyViewModelFactory
+import com.example.mealtracker.interfaces.TimeViewModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -39,8 +45,16 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+private lateinit var viewModel: TimeViewModel
+private lateinit var timeRecyclerView: RecyclerView
+lateinit var adapter: MyAdapter
+private val cal = Calendar.getInstance()
+private var todaysDate: String = SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(cal.time)
+
 class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
+
     private var param1: String? = null
     private var param2: String? = null
     lateinit var pieChart: PieChart
@@ -80,17 +94,29 @@ class HomeFragment : Fragment() {
         binding.leftArrow.setOnClickListener {
             this.calendar.add(Calendar.DAY_OF_MONTH, -1)
             currentDate = SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(calendar.time)
-            binding.datePicker.text = currentDate
-//            Todo get the data from firebase
+            if (currentDate == todaysDate) {
+                binding.datePicker.text = "Today"
+
+            } else {
+                binding.datePicker.text = currentDate
+
+            }
+            getDataFromFireBase(currentDate)
+
         }
 
         binding.rightArrow.setOnClickListener {
             this.calendar.add(Calendar.DAY_OF_MONTH, 1)
             currentDate = SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(calendar.time)
-            binding.datePicker.text = currentDate
-            //            Todo get the data from firebase
-
+            if (currentDate == todaysDate) {
+                binding.datePicker.text = "Today"
+            } else {
+                binding.datePicker.text = currentDate
+            }
+            getDataFromFireBase(currentDate)
         }
+
+
 
         binding.datePicker.setOnClickListener {
             val datePickerFragment = DatePickerFragment()
@@ -102,22 +128,43 @@ class HomeFragment : Fragment() {
                 if (resultKey == "REQUEST_KEY") {
                     val date = bundle.getString("SELECTED_DATE")
                     Log.d("Selected date", "$date")
-                    val slectedDate =
-                        SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(calendar.time)
+                    calendar.set(Calendar.YEAR, date.toString().split("-")[2].toInt())
+                    calendar.set(Calendar.MONTH, date.toString().split("-")[1].toInt() - 1)
+                    calendar.set(Calendar.DATE, date.toString().split("-")[0].toInt())
                     currentDate = date.toString()
-                    calendar.set(Calendar.YEAR, currentDate.split("-")[2].toInt())
-                    calendar.set(Calendar.MONTH, currentDate.split("-")[1].toInt())
-                    calendar.set(Calendar.DATE, currentDate.split("-")[0].toInt())
-                    if (slectedDate == date) {
+                    if (date.toString() == todaysDate) {
                         binding.datePicker.text = "Today"
                     } else {
                         binding.datePicker.text = date
 
                     }
+                    getDataFromFireBase(currentDate)
                 }
             }
             datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
         }
+
+        timeRecyclerView = view.findViewById(R.id.recyclerViewHome)
+        timeRecyclerView.layoutManager = LinearLayoutManager(context)
+        timeRecyclerView.setHasFixedSize(true)
+        adapter = MyAdapter()
+        timeRecyclerView.adapter = adapter
+        viewModel = ViewModelProvider(
+            this,
+            MyViewModelFactory("10-11-2022", "OLbgV02I7aQzrxooENPCm2ptGUG1")
+        ).get(TimeViewModel::class.java)
+
+        viewModel.allTimes.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            adapter.updateTimeList(it)
+        })
+
+
+    }
+
+    private fun resetCalender() {
+        calendar.set(Calendar.YEAR, todaysDate.split("-")[2].toInt())
+        calendar.set(Calendar.MONTH, todaysDate.split("-")[1].toInt())
+        calendar.set(Calendar.DATE, todaysDate.split("-")[0].toInt())
     }
 
 
@@ -214,7 +261,7 @@ class HomeFragment : Fragment() {
 
     private fun getDataFromFireBase(date: String) {
         db = Firebase.database.reference
-        val dummyDate = "14-10-2022"
+        val dummyDate = date
         val uid = "OLbgV02I7aQzrxooENPCm2ptGUG1"
         /*db.child("Users").child(uid).get()
             .addOnSuccessListener { result ->
@@ -253,6 +300,7 @@ class HomeFragment : Fragment() {
                 }
                 if (isAdded)// This {@link androidx.fragment.app.Fragment} class method is responsible to check if the your view is attached to the Activity or not
                 {
+                    pieChart.animateY(1400, Easing.EaseInOutQuad)
                     val entries: ArrayList<PieEntry> = ArrayList()
                     entries.add(PieEntry(fiber.toFloat()))
                     entries.add(PieEntry(protein.toFloat()))
