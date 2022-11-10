@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.mealtracker.databinding.ActivityMainBinding
 import com.example.mealtracker.fragments.HomeFragment
 import com.example.mealtracker.fragments.InputFragment
+import com.example.mealtracker.fragments.MonthFragment
 import com.example.mealtracker.fragments.WeekFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        supportActionBar?.hide()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main)
         USER_ID = intent.getStringExtra("USER_ID").toString()
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         val homeFragment = HomeFragment()
         val inputFragment = InputFragment()
         val weekFragment = WeekFragment()
+        val monthFragment = MonthFragment()
 //        bottomnavbar = binding.bottomNav
         bottomnavbar = findViewById<BottomNavigationView>(R.id.bottomNav)
 
@@ -45,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                     setTheFragment(weekFragment)
                 }
                 R.id.monthly -> {
-//                    setTheFragment(inputFragment)
+                    setTheFragment(monthFragment)
                 }
                 R.id.add -> {
                     setTheFragment(inputFragment)

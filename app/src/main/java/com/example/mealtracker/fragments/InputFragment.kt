@@ -51,7 +51,7 @@ class InputFragment : Fragment() {
 
     //    private var storageRef = Firebase.storage.reference;
     private lateinit var authenticaion: FirebaseAuth
-    lateinit var imageBitMap: Bitmap
+    var imageBitMap: Bitmap? = null
     private lateinit var imageUri: Uri
 
     //    private lateinit var databaseReference: DatabaseReference
@@ -218,6 +218,7 @@ class InputFragment : Fragment() {
                     val responseBody = response.body()!!
                     val parsed: List<Parsed> = responseBody.parsed
                     val food: FoodX = parsed[0].food
+                    val imageUrl: String = food.image
                     val nutrients: NutrientsX = food.nutrients
                     Log.d("Inside the fragment nutrients data", nutrients.toString())
                     foodNutrients = FoodNutrients(
@@ -225,11 +226,9 @@ class InputFragment : Fragment() {
                         nutrients.FAT.toDouble(),
                         nutrients.FIBTG.toDouble(),
                         nutrients.PROCNT.toDouble(),
-                        nutrients.ENERC_KCAL
+                        nutrients.ENERC_KCAL.toDouble()
                     )
-
 //                Writing all the details user entered with nutrition data into firebase
-                    binding.llprogressBar.visibility = View.VISIBLE
 
                     writeDateToFirebase(
                         foodNutrients!!,
@@ -239,10 +238,8 @@ class InputFragment : Fragment() {
                         binding.timePicker.text.toString(),
 //                    "23",
                         binding.quantity.text.toString(),
-                        input
+                        imageUrl
                     )
-
-                    binding.llprogressBar.visibility = View.GONE
 
 
                 }
@@ -256,6 +253,7 @@ class InputFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                         Log.d("Main Activity ", "On failure " + t.message)
+                        throw t
                     }
                 }
             })
@@ -270,7 +268,7 @@ class InputFragment : Fragment() {
         date: String,
         time: String,
         quantity: String,
-        mealName: String
+        imageUrl: String
     ) {
         authenticaion = FirebaseAuth.getInstance()
 //        val uid = authenticaion.currentUser?.uid
@@ -279,32 +277,54 @@ class InputFragment : Fragment() {
         val refStorage =
             FirebaseStorage.getInstance().getReference("Images").child(uid).child(date).child(time)
         val baos = ByteArrayOutputStream()
-        imageBitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val img = baos.toByteArray()
-        val uploadTask = refStorage.putBytes(img)
-        val urlTask = uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let {
-                    throw it
+        if (imageBitMap == null) {
+            val mealNameUI = binding.mealName.text.toString()
+            val timeT = Time(nutrientsX, imageUrl, mealNameUI, quantity, time)
+            database.child(uid).child(date).child(time).setValue(timeT).addOnSuccessListener {
+                val activity: Activity? = activity
+                if (activity != null && isAdded) {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Saved Data Successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-            refStorage.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result
-                val timeT = Time(nutrientsX, downloadUri.toString(), "BreakFast", quantity, time)
-                database.child(uid).child(date).child(time).setValue(timeT).addOnSuccessListener {
-                    val activity: Activity? = activity
-                    if (activity != null && isAdded) {
-                        Toast.makeText(
-                            requireActivity(),
-                            "Saved Data Successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
+        } else {
+            imageBitMap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val img = baos.toByteArray()
+            val uploadTask = refStorage.putBytes(img)
+            val urlTask = uploadTask.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
                     }
                 }
-            } else {
+                refStorage.downloadUrl
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUri = task.result
+                    val mealNameUI = binding.mealName.text.toString()
+                    val timeT = Time(nutrientsX, downloadUri.toString(), mealNameUI, quantity, time)
+                    database.child(uid).child(date).child(time).setValue(timeT)
+                        .addOnSuccessListener {
+                            val activity: Activity? = activity
+                            if (activity != null && isAdded) {
+                                Toast.makeText(
+                                    requireActivity(),
+                                    "Saved Data Successfully",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                } else {
 
+                    Toast.makeText(
+                        requireActivity(),
+                        "Error Saving",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 
@@ -318,7 +338,6 @@ class InputFragment : Fragment() {
         } catch (e: ActivityNotFoundException) {
             // display error state to the user
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -333,12 +352,6 @@ class InputFragment : Fragment() {
             }
         }
     }
-
-//    private fun showProgressBar(){
-//        dialog= Dialog(activity!!)
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        dialog.setContentView(R.lay)
-//    }
 }
 
 

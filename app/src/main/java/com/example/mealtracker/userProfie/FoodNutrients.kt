@@ -5,5 +5,5 @@ data class FoodNutrients(
     val ENERC_KCAL: Double? = null,
     val FAT: Double? = null,
     val FIBTG: Double? = null,
-    val PROCNT: Int? = null
+    val PROCNT: Double? = null
 )

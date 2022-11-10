@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".fragments.WeekFragment">
+    tools:context=".fragments.MonthFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40sp"
                 android:layout_marginTop="50dp"
-                android:text="Week Fragment : To be Implemented"
+                android:text="Month Fragment : To be Implemented"
 
                 android:textAlignment="center"
                 android:textColor="#24AF26"
