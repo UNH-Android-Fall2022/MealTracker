@@ -36,7 +36,7 @@
                 android:id="@+id/imageView"
                 android:adjustViewBounds="true"
                 android:background="#F3388733"
-                android:scaleType="centerInside"
+                android:scaleType="centerCrop"
                 android:contentDescription="TODO" />
 
             <!--            <TextView-->
