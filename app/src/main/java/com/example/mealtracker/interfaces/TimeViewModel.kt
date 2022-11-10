@@ -18,6 +18,10 @@ class TimeViewModel(val date: String, val userId: String) : ViewModel() {
         repository.loadData(_allTimes, date, userId)
     }
 
+    fun getList(): MutableLiveData<List<Time>> {
+        return _allTimes
+    }
+
 }
 
 class MyViewModelFactory(val date: String, val userId: String) : ViewModelProvider.Factory {
