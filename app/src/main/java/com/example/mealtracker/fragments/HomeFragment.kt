@@ -16,6 +16,7 @@ import com.example.mealtracker.adapter.MyAdapter
 import com.example.mealtracker.databinding.FragmentHomeBinding
 import com.example.mealtracker.interfaces.MyViewModelFactory
 import com.example.mealtracker.interfaces.TimeViewModel
+import com.example.mealtracker.repository.DataRepository
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -23,7 +24,6 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -46,23 +46,27 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 
-private lateinit var viewModel: TimeViewModel
-private lateinit var timeRecyclerView: RecyclerView
-lateinit var adapter: MyAdapter
+
 private val cal = Calendar.getInstance()
 private var todaysDate: String = SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(cal.time)
 
 class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
 
+    private var repository: DataRepository? = null
+
+
     private var param1: String? = null
     private var param2: String? = null
     lateinit var pieChart: PieChart
-    private var currentDate: String = ""
+    private var currentDate: String = todaysDate
     private lateinit var binding: FragmentHomeBinding
     private val calendar = Calendar.getInstance()
     private lateinit var db: DatabaseReference
-    private lateinit var authenticaion: FirebaseAuth
+    private lateinit var viewModel: TimeViewModel
+    private lateinit var timeRecyclerView: RecyclerView
+    lateinit var adapter: MyAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -81,7 +85,7 @@ class HomeFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_home, container, false)
-        setPieChart()
+//        setPieChart()
 
         return binding.root
     }
@@ -96,12 +100,12 @@ class HomeFragment : Fragment() {
             currentDate = SimpleDateFormat("dd-MM-YYYY", Locale.ENGLISH).format(calendar.time)
             if (currentDate == todaysDate) {
                 binding.datePicker.text = "Today"
-
             } else {
                 binding.datePicker.text = currentDate
-
             }
             getDataFromFireBase(currentDate)
+            repository = DataRepository().getInstance()
+            repository!!.loadData(viewModel.getList(), currentDate, "OLbgV02I7aQzrxooENPCm2ptGUG1")
 
         }
 
@@ -114,9 +118,9 @@ class HomeFragment : Fragment() {
                 binding.datePicker.text = currentDate
             }
             getDataFromFireBase(currentDate)
+            repository = DataRepository().getInstance()
+            repository!!.loadData(viewModel.getList(), currentDate, "OLbgV02I7aQzrxooENPCm2ptGUG1")
         }
-
-
 
         binding.datePicker.setOnClickListener {
             val datePickerFragment = DatePickerFragment()
@@ -139,10 +143,21 @@ class HomeFragment : Fragment() {
 
                     }
                     getDataFromFireBase(currentDate)
+                    repository = DataRepository().getInstance()
+                    repository!!.loadData(
+                        viewModel.getList(),
+                        currentDate,
+                        "OLbgV02I7aQzrxooENPCm2ptGUG1"
+                    )
                 }
             }
             datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
         }
+
+        Log.d(
+            "Inside the home fragment ",
+            " Inside the home fragment again-------------------------------------"
+        )
 
         timeRecyclerView = view.findViewById(R.id.recyclerViewHome)
         timeRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -151,20 +166,14 @@ class HomeFragment : Fragment() {
         timeRecyclerView.adapter = adapter
         viewModel = ViewModelProvider(
             this,
-            MyViewModelFactory("10-11-2022", "OLbgV02I7aQzrxooENPCm2ptGUG1")
+            MyViewModelFactory(currentDate, "OLbgV02I7aQzrxooENPCm2ptGUG1")
         ).get(TimeViewModel::class.java)
 
         viewModel.allTimes.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.updateTimeList(it)
         })
 
-
-    }
-
-    private fun resetCalender() {
-        calendar.set(Calendar.YEAR, todaysDate.split("-")[2].toInt())
-        calendar.set(Calendar.MONTH, todaysDate.split("-")[1].toInt())
-        calendar.set(Calendar.DATE, todaysDate.split("-")[0].toInt())
+        getDataFromFireBase(todaysDate)
     }
 
 
@@ -172,9 +181,7 @@ class HomeFragment : Fragment() {
 
     private fun setPieChart() {
         pieChart = binding.pieChart
-        getDataFromFireBase("hello")
-
-
+        getDataFromFireBase(todaysDate)
         // on below line we are setting user percent value,
         // setting description as enabled and offset for pie chart
         pieChart.setUsePercentValues(true)
@@ -263,13 +270,6 @@ class HomeFragment : Fragment() {
         db = Firebase.database.reference
         val dummyDate = date
         val uid = "OLbgV02I7aQzrxooENPCm2ptGUG1"
-        /*db.child("Users").child(uid).get()
-            .addOnSuccessListener { result ->
-                Log.d("TAG getting details from firebase", "${result.child("25-10-2022").value}")
-            }
-            .addOnFailureListener { exception ->
-                Log.d("TAG", "Error getting documents: ", exception)
-            }*/
         val myRef = db.child("Users").child(uid)
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -300,6 +300,49 @@ class HomeFragment : Fragment() {
                 }
                 if (isAdded)// This {@link androidx.fragment.app.Fragment} class method is responsible to check if the your view is attached to the Activity or not
                 {
+                    pieChart = binding.pieChart
+//                    getDataFromFireBase(todaysDate)
+                    // on below line we are setting user percent value,
+                    // setting description as enabled and offset for pie chart
+                    pieChart.setUsePercentValues(true)
+                    pieChart.description.isEnabled = false
+                    pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
+
+                    // on below line we are setting drag for our pie chart
+                    pieChart.dragDecelerationFrictionCoef = 0.95f
+
+                    // on below line we are setting hole
+                    // and hole color for pie chart
+                    pieChart.isDrawHoleEnabled = true
+                    pieChart.setHoleColor(Color.WHITE)
+
+                    // on below line we are setting circle color and alpha
+                    pieChart.setTransparentCircleColor(Color.WHITE)
+                    pieChart.setTransparentCircleAlpha(110)
+
+                    // on  below line we are setting hole radius
+                    pieChart.holeRadius = 58f
+                    pieChart.transparentCircleRadius = 61f
+
+                    // on below line we are setting center text
+                    pieChart.setDrawCenterText(true)
+
+                    // on below line we are setting
+                    // rotation for our pie chart
+                    pieChart.rotationAngle = 0f
+
+                    // enable rotation of the pieChart by touch
+                    pieChart.isRotationEnabled = true
+                    pieChart.isHighlightPerTapEnabled = true
+
+                    // on below line we are setting animation for our pie chart
+//                    pieChart.animateY(1400, Easing.EaseInOutQuad)
+
+                    // on below line we are disabling our legend for pie chart
+                    pieChart.legend.isEnabled = false
+                    pieChart.setEntryLabelColor(Color.WHITE)
+                    pieChart.setEntryLabelTextSize(12f)
+
                     pieChart.animateY(1400, Easing.EaseInOutQuad)
                     val entries: ArrayList<PieEntry> = ArrayList()
                     entries.add(PieEntry(fiber.toFloat()))
@@ -324,7 +367,6 @@ class HomeFragment : Fragment() {
                     colors.add(resources.getColor(R.color.material_dynamic_primary70))
                     colors.add(resources.getColor(R.color.green_c))
 
-
                     // on below line we are setting colors.
                     dataSet.colors = colors
 
@@ -345,7 +387,6 @@ class HomeFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
     }
