@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -66,6 +67,8 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: TimeViewModel
     private lateinit var timeRecyclerView: RecyclerView
     lateinit var adapter: MyAdapter
+    private lateinit var userId: String
+    private lateinit var authenticaion: FirebaseAuth
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +78,9 @@ class HomeFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        authenticaion = FirebaseAuth.getInstance()
+        userId = authenticaion.currentUser?.uid.toString()
+        Log.d("Getting the user ID", userId)
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
     }
@@ -105,7 +111,7 @@ class HomeFragment : Fragment() {
             }
             getDataFromFireBase(currentDate)
             repository = DataRepository().getInstance()
-            repository!!.loadData(viewModel.getList(), currentDate, "OLbgV02I7aQzrxooENPCm2ptGUG1")
+            repository!!.loadData(viewModel.getList(), currentDate, userId)
 
         }
 
@@ -119,7 +125,7 @@ class HomeFragment : Fragment() {
             }
             getDataFromFireBase(currentDate)
             repository = DataRepository().getInstance()
-            repository!!.loadData(viewModel.getList(), currentDate, "OLbgV02I7aQzrxooENPCm2ptGUG1")
+            repository!!.loadData(viewModel.getList(), currentDate, userId)
         }
 
         binding.datePicker.setOnClickListener {
@@ -147,7 +153,7 @@ class HomeFragment : Fragment() {
                     repository!!.loadData(
                         viewModel.getList(),
                         currentDate,
-                        "OLbgV02I7aQzrxooENPCm2ptGUG1"
+                        userId
                     )
                 }
             }
@@ -166,7 +172,7 @@ class HomeFragment : Fragment() {
         timeRecyclerView.adapter = adapter
         viewModel = ViewModelProvider(
             this,
-            MyViewModelFactory(currentDate, "OLbgV02I7aQzrxooENPCm2ptGUG1")
+            MyViewModelFactory(currentDate, userId)
         ).get(TimeViewModel::class.java)
 
         viewModel.allTimes.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -269,7 +275,7 @@ class HomeFragment : Fragment() {
     private fun getDataFromFireBase(date: String) {
         db = Firebase.database.reference
         val dummyDate = date
-        val uid = "OLbgV02I7aQzrxooENPCm2ptGUG1"
+        val uid = userId
         val myRef = db.child("Users").child(uid)
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
