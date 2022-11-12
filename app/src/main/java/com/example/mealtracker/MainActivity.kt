@@ -1,5 +1,8 @@
 package com.example.mealtracker
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -22,12 +25,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomnavbar: BottomNavigationView
     private lateinit var binding: ActivityMainBinding
     private lateinit var authenticaion: FirebaseAuth
+    var PREFS_KEY = "prefs"
+    var EMAIL_KEY = "email"
+    var email = ""
+    lateinit var sharedPreferences: SharedPreferences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         authenticaion = FirebaseAuth.getInstance()
         USER_ID = authenticaion.currentUser?.uid.toString()
+        sharedPreferences = getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE)
+        email = sharedPreferences.getString(EMAIL_KEY, null)!!
+
 //        supportActionBar?.hide()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main)
@@ -57,9 +67,28 @@ class MainActivity : AppCompatActivity() {
                 R.id.add -> {
                     setTheFragment(inputFragment)
                 }
+
+                R.id.logOut -> {
+                    val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                    // on below line we are clearing our editor.
+                    editor.clear()
+                    // on below line we are applying changes which are cleared.
+                    editor.apply()
+                    val i = Intent(this@MainActivity, LoginActivity::class.java)
+
+                    // on below line we are simply starting
+                    // our activity to start main activity
+                    startActivity(i)
+
+                    // on below line we are calling
+                    // finish to close our main activity 2.
+                    finish()
+                }
             }
             true
         }
+
+
     }
 
     private fun setTheFragment(fragment: Fragment) {
