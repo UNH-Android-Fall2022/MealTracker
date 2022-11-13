@@ -1,6 +1,8 @@
 package com.example.mealtracker
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -14,7 +16,12 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val db = FirebaseAuth.getInstance()
     private val TAG: String = "In Login Activity"
-
+    lateinit var sharedPreferences: SharedPreferences
+    var PREFS_KEY = "prefs"
+    var EMAIL_KEY = "email"
+    var PWD_KEY = "pwd"
+    var email = ""
+    var pwd = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -22,6 +29,12 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sharedPreferences = getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE)
+
+        email = sharedPreferences.getString(EMAIL_KEY, "").toString()
+
+        pwd = sharedPreferences.getString(PWD_KEY, "").toString()
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
 //      https://firebase.google.com/docs/auth/android/start#kotlin+ktx_3
 
@@ -48,7 +61,14 @@ class LoginActivity : AppCompatActivity() {
                     db.signInWithEmailAndPassword(emailId, password)
                         .addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
-                                Log.d(TAG, "Sign in successfully")
+                                // on below line we are adding our email and
+                                // pwd to shared prefs to save them.
+                                editor.putString(EMAIL_KEY, emailId)
+                                editor.putString(PWD_KEY, password)
+
+                                // on below line we are applying
+                                // changes to our shared prefs.
+                                editor.apply()
                                 val user = db.currentUser
                                 if (user != null) {
                                     Toast.makeText(
@@ -86,7 +106,22 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!email.equals("") && !pwd.equals("")) {
+            // if email and pwd is not empty we
+            // are opening our main 2 activity on below line.
+            val i = Intent(this@LoginActivity, MainActivity::class.java)
+
+            // on below line we are calling start
+            // activity method to start our activity.
+            startActivity(i)
+
+            // on below line we are calling
+            // finish to finish our main activity.
+            finish()
+        }
+    }
 }
