@@ -17,21 +17,13 @@
         android:id="@+id/monthly"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_calendar_month_24"
-
         android:title="Monthly" />
 
     <item
         android:id="@+id/add"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_add_24"
-
         android:title="ADD" />
 
-    <item
-        android:id="@+id/logOut"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_logout_24"
-
-        android:title="LOG OUT" />
 
 </menu>
