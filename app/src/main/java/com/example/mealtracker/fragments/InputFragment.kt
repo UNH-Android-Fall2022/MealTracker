@@ -244,8 +244,6 @@ class InputFragment : Fragment() {
                         binding.quantity.text.toString(),
                         imageUrl
                     )
-
-
                 }
 
                 override fun onFailure(call: Call<FoodDetails?>, t: Throwable) {
@@ -312,6 +310,7 @@ class InputFragment : Fragment() {
                     val timeT = Time(nutrientsX, downloadUri.toString(), mealNameUI, quantity, time)
                     database.child(uid).child(date).child(time).setValue(timeT)
                         .addOnSuccessListener {
+                            imageBitMap = null
                             val activity: Activity? = activity
                             if (activity != null && isAdded) {
                                 Toast.makeText(
@@ -350,7 +349,6 @@ class InputFragment : Fragment() {
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
                 imageBitMap = data?.extras?.get("data") as Bitmap
 //                imageUri = data?.data!!
-
                 binding.imageView.setImageBitmap(imageBitMap)
 //                binding.imageView.setImageURI(imageUri)
             }
