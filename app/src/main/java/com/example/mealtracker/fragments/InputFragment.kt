@@ -331,7 +331,6 @@ class InputFragment : Fragment() {
             }
         }
 
-
     }
 
     private fun dispatchTakePictureIntent() {

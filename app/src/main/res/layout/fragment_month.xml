@@ -25,12 +25,13 @@
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/idBarChart"
                     android:layout_width="match_parent"
-                    android:layout_height="245dp" />
+                    android:layout_height="275dp"
+                    android:layout_marginTop="30dp" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart"
                     android:layout_width="match_parent"
-                    android:layout_height="245dp" />
+                    android:layout_height="264dp" />
             </LinearLayout>
 
             <TextView
