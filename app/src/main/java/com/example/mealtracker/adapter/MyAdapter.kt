@@ -12,9 +12,29 @@ import com.example.mealtracker.userProfie.Time
 
 class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewholder>() {
 
+    private lateinit var mlistner: onItemClickListner
+
+    interface onItemClickListner {
+        fun onItemClick(position: Int)
+    }
+
+
+    fun setOnItemCLickListner(listner: onItemClickListner) {
+        mlistner = listner
+    }
+
     private val timeList = ArrayList<Time>()
 
-    class MyViewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class MyViewholder(itemView: View, listner: onItemClickListner) :
+        RecyclerView.ViewHolder(itemView) {
+
+        init {
+            itemView.setOnClickListener {
+
+                listner.onItemClick(adapterPosition)
+            }
+        }
+
         val mealname: TextView = itemView.findViewById(R.id.mealName)
         val mealtime: TextView = itemView.findViewById(R.id.time)
         val mealQuantity: TextView = itemView.findViewById(R.id.mealQuantity)
@@ -28,7 +48,7 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewholder>() {
             parent,
             false
         )
-        return MyViewholder(timeView)
+        return MyViewholder(timeView, mlistner)
     }
 
     override fun onBindViewHolder(holder: MyViewholder, position: Int) {
