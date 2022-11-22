@@ -1,5 +1,6 @@
 package com.example.mealtracker.adapter
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,6 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewholder>() {
 
         init {
             itemView.setOnClickListener {
-
                 listner.onItemClick(adapterPosition)
             }
         }
@@ -60,6 +60,25 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewholder>() {
         Glide.with(holder.itemView.context)
             .load(currentItem.image).fitCenter()
             .into(holder.imageViewL)
+
+        holder.itemView.setOnClickListener {
+            val dialog = AlertDialog.Builder(holder.itemView.context)
+            val dialogueview = LayoutInflater.from(holder.itemView.context)
+                .inflate(R.layout.custome_dialogue, null)
+            val imageI: ImageView = dialogueview.findViewById(R.id.imageViewDialogue)
+//            val calories: TextView = dialogueview.findViewById(R.id.imageViewDialogue)
+
+            val cholestrol: TextView = dialogueview.findViewById(R.id.cholestrolText)
+            val fiber: TextView = dialogueview.findViewById(R.id.fiberText)
+            val fat: TextView = dialogueview.findViewById(R.id.fatText)
+
+            Glide.with(holder.itemView.context)
+                .load(currentItem.image).fitCenter()
+                .into(imageI)
+            dialog.setView(dialogueview)
+            dialog.setCancelable(true)
+            dialog.show()
+        }
     }
 
     fun updateTimeList(timeList: List<Time>) {
