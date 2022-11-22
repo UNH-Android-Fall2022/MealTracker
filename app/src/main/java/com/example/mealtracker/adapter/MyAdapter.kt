@@ -1,5 +1,6 @@
 package com.example.mealtracker.adapter
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +13,28 @@ import com.example.mealtracker.userProfie.Time
 
 class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewholder>() {
 
+    private lateinit var mlistner: onItemClickListner
+
+    interface onItemClickListner {
+        fun onItemClick(position: Int)
+    }
+
+
+    fun setOnItemCLickListner(listner: onItemClickListner) {
+        mlistner = listner
+    }
+
     private val timeList = ArrayList<Time>()
 
-    class MyViewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class MyViewholder(itemView: View, listner: onItemClickListner) :
+        RecyclerView.ViewHolder(itemView) {
+
+        init {
+            itemView.setOnClickListener {
+                listner.onItemClick(adapterPosition)
+            }
+        }
+
         val mealname: TextView = itemView.findViewById(R.id.mealName)
         val mealtime: TextView = itemView.findViewById(R.id.time)
         val mealQuantity: TextView = itemView.findViewById(R.id.mealQuantity)
@@ -28,7 +48,7 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewholder>() {
             parent,
             false
         )
-        return MyViewholder(timeView)
+        return MyViewholder(timeView, mlistner)
     }
 
     override fun onBindViewHolder(holder: MyViewholder, position: Int) {
@@ -40,6 +60,25 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewholder>() {
         Glide.with(holder.itemView.context)
             .load(currentItem.image).fitCenter()
             .into(holder.imageViewL)
+
+        holder.itemView.setOnClickListener {
+            val dialog = AlertDialog.Builder(holder.itemView.context)
+            val dialogueview = LayoutInflater.from(holder.itemView.context)
+                .inflate(R.layout.custome_dialogue, null)
+            val imageI: ImageView = dialogueview.findViewById(R.id.imageViewDialogue)
+//            val calories: TextView = dialogueview.findViewById(R.id.imageViewDialogue)
+
+            val cholestrol: TextView = dialogueview.findViewById(R.id.cholestrolText)
+            val fiber: TextView = dialogueview.findViewById(R.id.fiberText)
+            val fat: TextView = dialogueview.findViewById(R.id.fatText)
+
+            Glide.with(holder.itemView.context)
+                .load(currentItem.image).fitCenter()
+                .into(imageI)
+            dialog.setView(dialogueview)
+            dialog.setCancelable(true)
+            dialog.show()
+        }
     }
 
     fun updateTimeList(timeList: List<Time>) {
