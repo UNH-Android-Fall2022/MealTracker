@@ -56,7 +56,6 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewholder>() {
         holder.mealname.text = currentItem.mealName
         holder.mealtime.text = currentItem.time
         holder.mealQuantity.text = currentItem.quantity
-
         Glide.with(holder.itemView.context)
             .load(currentItem.image).fitCenter()
             .into(holder.imageViewL)
@@ -65,16 +64,25 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewholder>() {
             val dialog = AlertDialog.Builder(holder.itemView.context)
             val dialogueview = LayoutInflater.from(holder.itemView.context)
                 .inflate(R.layout.custome_dialogue, null)
-            val imageI: ImageView = dialogueview.findViewById(R.id.imageViewDialogue)
-//            val calories: TextView = dialogueview.findViewById(R.id.imageViewDialogue)
 
+            val imageI: ImageView = dialogueview.findViewById(R.id.imageViewDialogue)
+            val calories: TextView = dialogueview.findViewById(R.id.caloriesText)
             val cholestrol: TextView = dialogueview.findViewById(R.id.cholestrolText)
             val fiber: TextView = dialogueview.findViewById(R.id.fiberText)
             val fat: TextView = dialogueview.findViewById(R.id.fatText)
+            val protiencount: TextView = dialogueview.findViewById(R.id.protienText)
+
 
             Glide.with(holder.itemView.context)
                 .load(currentItem.image).fitCenter()
                 .into(imageI)
+
+            cholestrol.text = currentItem.foodNutrients?.chocdf.toString()
+            fiber.text = currentItem.foodNutrients?.fibtg.toString()
+            fat.text = currentItem.foodNutrients?.fat.toString()
+            calories.text = currentItem.foodNutrients?.enerc_KCAL.toString()
+            protiencount.text = currentItem.foodNutrients?.procnt.toString()
+
             dialog.setView(dialogueview)
             dialog.setCancelable(true)
             dialog.show()
