@@ -99,13 +99,57 @@ class InputFragment : Fragment() {
         }
 
 //        Save all input details for the food after getting the nutrition data from EDEMAN api
+
         binding.saveToFirebase.setOnClickListener {
-            getFoodDetails(binding.searchBox.text.toString())
+            when {
 
-        }
+                TextUtils.isEmpty(binding.searchBox.text.toString().trim { it <= ' ' }) -> {
+                    Toast.makeText(
+                        context,
+                        "Please enter a valid food name",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                TextUtils.isEmpty(binding.mealName.text.toString().trim { it <= ' ' }) -> {
+                    Toast.makeText(
+                        context,
+                        "Please enter a valid meal name to search",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                TextUtils.isEmpty(binding.datePicker.text.toString().trim { it <= ' ' }) -> {
+                    Toast.makeText(
+                        context,
+                        "Please select a valid date",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                TextUtils.isEmpty(binding.timePicker.text.toString().trim { it <= ' ' }) -> {
+                    Toast.makeText(
+                        context,
+                        "Please select a valid time",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
-        binding.imageView.setOnClickListener {
-            dispatchTakePictureIntent()
+                TextUtils.isEmpty(binding.quantity.text.toString().trim { it <= ' ' }) -> {
+                    Toast.makeText(
+                        context,
+                        "Please enter a valid quantity greater than 100",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else -> {
+                    getFoodDetails(binding.searchBox.text.toString())
+                }
+            }
+
+            binding.imageView.setOnClickListener {
+
+
+                dispatchTakePictureIntent()
+
+            }
         }
     }
 
