@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -8,25 +7,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageViewDialogue"
-            android:layout_width="160dp"
-            android:layout_height="150dp"
-            android:layout_margin="10dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/round_outline"
-            android:clipToOutline="true"
-            android:contentDescription="TODO"
-            android:scaleType="centerCrop"
-            android:src="@drawable/camer_logo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.141" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageViewDialogue"
+                android:layout_width="160dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/round_outline"
+                android:clipToOutline="true"
+                android:contentDescription="TODO"
+                android:scaleType="centerCrop"
+                android:src="@drawable/camer_logo" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,39 +38,57 @@
             <TextView
                 android:id="@+id/caloriesText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
                 android:text="Heading"
+                android:background="@drawable/round_outline"
+                android:gravity="center"
                 android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/protienText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
                 android:text="Heading"
+                android:background="@drawable/round_outline"
+                android:gravity="center"
                 android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/fiberText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
                 android:text="Heading"
+                android:background="@drawable/round_outline"
                 android:textAlignment="center"
+                android:gravity="center"
                 tools:layout_editor_absoluteX="0dp" />
 
             <TextView
                 android:id="@+id/fatText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
                 android:text="Heading"
+                android:background="@drawable/round_outline"
                 android:textAlignment="center"
+                android:gravity="center"
                 tools:layout_editor_absoluteX="0dp" />
 
             <TextView
                 android:id="@+id/cholestrolText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
                 android:text="Heading"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/round_outline"
                 android:textAlignment="center"
+                android:gravity="center"
                 tools:layout_editor_absoluteX="0dp" />
         </LinearLayout>
     </LinearLayout>

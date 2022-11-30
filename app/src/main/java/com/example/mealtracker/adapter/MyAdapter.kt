@@ -77,11 +77,11 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewholder>() {
                 .load(currentItem.image).fitCenter()
                 .into(imageI)
 
-            cholestrol.text = currentItem.foodNutrients?.chocdf.toString()
-            fiber.text = currentItem.foodNutrients?.fibtg.toString()
-            fat.text = currentItem.foodNutrients?.fat.toString()
-            calories.text = currentItem.foodNutrients?.enerc_KCAL.toString()
-            protiencount.text = currentItem.foodNutrients?.procnt.toString()
+            cholestrol.text = "Cholestrol  " + currentItem.foodNutrients?.chocdf.toString()
+            fiber.text = "Fiber  " + currentItem.foodNutrients?.fibtg.toString()
+            fat.text = "Fat  " + currentItem.foodNutrients?.fat.toString()
+            calories.text = "Calories  " + currentItem.foodNutrients?.enerc_KCAL.toString()
+            protiencount.text = "Protien  " + currentItem.foodNutrients?.procnt.toString()
 
             dialog.setView(dialogueview)
             dialog.setCancelable(true)
