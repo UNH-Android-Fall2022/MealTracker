@@ -14,5 +14,9 @@ User has the ability to see visualized data using pie charts and bar charts
 Data organized based on the monthly and weekly time frames
 
 
-https://user-images.githubusercontent.com/82794632/205465632-27dbd2be-7e7f-4411-a9c7-f8fe368bb8e2.mp4
+
+
+
+
+https://user-images.githubusercontent.com/82794632/205465669-e7448def-6f48-4b96-abdd-c747a6896514.mp4
 
