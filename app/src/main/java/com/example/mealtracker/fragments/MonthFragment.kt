@@ -134,6 +134,9 @@ class MonthFragment : Fragment() {
         })
     }
 
+
+//    https://www.geeksforgeeks.org/android-create-barchart-with-kotlin/
+
     private fun showBarChart(
         fiber: Int,
         protein: Int,

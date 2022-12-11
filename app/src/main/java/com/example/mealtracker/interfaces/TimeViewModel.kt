@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mealtracker.repository.DataRepository
 import com.example.mealtracker.userProfie.Time
 
+
+// https://www.youtube.com/watch?v=VVXKVFyYQdQ&ab_channel=Foxandroid
 class TimeViewModel(val date: String, val userId: String) : ViewModel() {
 
     private val repository: DataRepository

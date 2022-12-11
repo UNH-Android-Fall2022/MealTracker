@@ -42,7 +42,7 @@ import java.util.*
 
 class InputFragment : Fragment() {
 
-    val REQUEST_IMAGE_CAPTURE = 1
+    private val REQUEST_IMAGE_CAPTURE = 1
     private val calendar = Calendar.getInstance()
     private var currentDate: String = ""
     private lateinit var binding: FragmentInputBinding

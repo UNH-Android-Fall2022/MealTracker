@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.mealtracker.userProfie.Time
 import com.google.firebase.database.*
 
+// https://www.youtube.com/watch?v=VVXKVFyYQdQ&ab_channel=Foxandroid
 class DataRepository {
 
     private val databaseReference: DatabaseReference =
@@ -34,6 +35,7 @@ class DataRepository {
 
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     TODO("Not yet implemented")
                 }
