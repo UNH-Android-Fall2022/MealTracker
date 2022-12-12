@@ -127,13 +127,13 @@ class MainActivity : AppCompatActivity() {
         alarmMgr = getSystemService(Context.ALARM_SERVICE) as? AlarmManager?
         val alarmFor: Calendar = Calendar.getInstance()
         alarmFor.set(Calendar.HOUR_OF_DAY, 12)
-        alarmFor.set(Calendar.MINUTE, 16)
-        alarmFor.set(Calendar.SECOND, 1)
+        alarmFor.set(Calendar.MINUTE, 0)
+        alarmFor.set(Calendar.SECOND, 0)
 
         alarmMgr?.setRepeating(
             AlarmManager.RTC_WAKEUP,
             alarmFor.timeInMillis,
-            Calendar.DAY_OF_MONTH.toLong(),
+            AlarmManager.INTERVAL_HOUR * 6,
             pendingIntent
         )
     }
