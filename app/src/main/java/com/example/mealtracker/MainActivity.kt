@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var authenticaion: FirebaseAuth
     var PREFS_KEY = "prefs"
-    var EMAIL_KEY = "email"
-    var email = ""
     private var alarmMgr: AlarmManager? = null
     lateinit var sharedPreferences: SharedPreferences
 
@@ -107,8 +105,6 @@ class MainActivity : AppCompatActivity() {
                 editor.clear()
                 editor.apply()
                 val i = Intent(this@MainActivity, LoginActivity::class.java)
-
-
                 startActivity(i)
 
                 finish()
@@ -124,22 +120,20 @@ class MainActivity : AppCompatActivity() {
 
         val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
-            1,
+            0,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-
         alarmMgr = getSystemService(Context.ALARM_SERVICE) as? AlarmManager?
-
         val alarmFor: Calendar = Calendar.getInstance()
         alarmFor.set(Calendar.HOUR_OF_DAY, 12)
-        alarmFor.set(Calendar.MINUTE, 10)
+        alarmFor.set(Calendar.MINUTE, 16)
         alarmFor.set(Calendar.SECOND, 1)
 
         alarmMgr?.setRepeating(
             AlarmManager.RTC_WAKEUP,
             alarmFor.timeInMillis,
-            1000 * 60 * 15,
+            Calendar.DAY_OF_MONTH.toLong(),
             pendingIntent
         )
     }
