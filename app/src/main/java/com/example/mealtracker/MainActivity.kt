@@ -1,5 +1,9 @@
 package com.example.mealtracker
 
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -18,6 +22,7 @@ import com.example.mealtracker.fragments.MonthFragment
 import com.example.mealtracker.fragments.WeekFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,15 +32,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var authenticaion: FirebaseAuth
     var PREFS_KEY = "prefs"
-    var EMAIL_KEY = "email"
-    var email = ""
+    private var alarmMgr: AlarmManager? = null
     lateinit var sharedPreferences: SharedPreferences
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         authenticaion = FirebaseAuth.getInstance()
         USER_ID = authenticaion.currentUser?.uid.toString()
+
+        createNotificationChannel()
+        scheduleNotification()
 
 //        supportActionBar?.hide()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -96,20 +102,12 @@ class MainActivity : AppCompatActivity() {
             R.id.logout -> {
                 sharedPreferences = getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE)
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
-                // on below line we are clearing our editor.
                 editor.clear()
-                // on below line we are applying changes which are cleared.
                 editor.apply()
                 val i = Intent(this@MainActivity, LoginActivity::class.java)
-
-                // on below line we are simply starting
-                // our activity to start main activity
                 startActivity(i)
 
-                // on below line we are calling
-                // finish to close our main activity 2.
                 finish()
-                //logout code
                 return true
             }
         }
@@ -117,5 +115,38 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun scheduleNotification() {
+        val intent = Intent(applicationContext, NotificationReceiver::class.java)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        alarmMgr = getSystemService(Context.ALARM_SERVICE) as? AlarmManager?
+        val alarmFor: Calendar = Calendar.getInstance()
+        alarmFor.set(Calendar.HOUR_OF_DAY, 12)
+        alarmFor.set(Calendar.MINUTE, 0)
+        alarmFor.set(Calendar.SECOND, 0)
+
+        alarmMgr?.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            alarmFor.timeInMillis,
+            AlarmManager.INTERVAL_HOUR * 6,
+            pendingIntent
+        )
+    }
+
+
+    private fun createNotificationChannel() {
+        val name = "Notif Channel"
+        val desc = "A Description of the Channel"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelID, name, importance)
+        channel.description = desc
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
 }
 

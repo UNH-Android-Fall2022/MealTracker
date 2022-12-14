@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -20,10 +21,13 @@ import com.example.mealtracker.interfaces.TimeViewModel
 import com.example.mealtracker.repository.DataRepository
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.MPPointF
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -282,7 +286,7 @@ class HomeFragment : Fragment() {
                     dataSet.setDrawIcons(false)
 
                     // on below line we are setting slice for pie
-                    dataSet.sliceSpace = 6f
+                    dataSet.sliceSpace = 3f
                     dataSet.iconsOffset = MPPointF(0f, 40f)
                     dataSet.selectionShift = 10f
 
@@ -305,6 +309,23 @@ class HomeFragment : Fragment() {
                     data.setValueTextColor(Color.WHITE)
                     pieChart.data = data
 
+                    pieChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                        override fun onValueSelected(e: Entry?, h: Highlight?) {
+
+                            if (e != null) {
+                                pieChart.centerText = e.y.toString()
+                            }
+
+                        }
+
+                        override fun onNothingSelected() {
+                        }
+
+                    })
+
+                    pieChart.data.setDrawValues(false)
+
+
                     // undo all highlights
                     pieChart.highlightValues(null)
 
@@ -316,6 +337,10 @@ class HomeFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {
             }
         })
+    }
+
+    fun showMotion(Mot: MotionEvent) {
+
     }
 
 

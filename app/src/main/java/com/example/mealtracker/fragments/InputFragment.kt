@@ -135,7 +135,7 @@ class InputFragment : Fragment() {
                 TextUtils.isEmpty(binding.quantity.text.toString().trim { it <= ' ' }) -> {
                     Toast.makeText(
                         context,
-                        "Please enter a valid quantity greater than 100",
+                        "Please enter a valid quantity greater than 0",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -249,6 +249,7 @@ class InputFragment : Fragment() {
     }
 
     private fun getFoodDetails(input: String): FoodNutrients? {
+        var quant: Double = binding.quantity.text.toString().toDouble();
         var foodNutrients: FoodNutrients? = null
 
 //        Calling the EDEMAM api to get the nutrition data based on the user input
@@ -257,7 +258,6 @@ class InputFragment : Fragment() {
                 .build().create(ApiInterface::class.java)
         val retoFitData = retroFitBuilder.getFoodDetails(input)
         val storageReference =
-
             retoFitData.enqueue(object : Callback<FoodDetails?> {
                 override fun onResponse(
                     call: Call<FoodDetails?>,
@@ -270,11 +270,11 @@ class InputFragment : Fragment() {
                     val nutrients: NutrientsX = food.nutrients
                     Log.d("Inside the fragment nutrients data", nutrients.toString())
                     foodNutrients = FoodNutrients(
-                        nutrients.CHOCDF.toDouble(),
-                        nutrients.FAT.toDouble(),
-                        nutrients.FIBTG.toDouble(),
-                        nutrients.PROCNT.toDouble(),
-                        nutrients.ENERC_KCAL.toDouble()
+                        (quant * nutrients.CHOCDF.toDouble()) / 100,
+                        (quant * nutrients.FAT.toDouble()) / 100,
+                        (quant * nutrients.FIBTG.toDouble()) / 100,
+                        (quant * nutrients.PROCNT.toDouble()) / 100,
+                        (quant * nutrients.ENERC_KCAL.toDouble()) / 100
                     )
 //                Writing all the details user entered with nutrition data into firebase
 

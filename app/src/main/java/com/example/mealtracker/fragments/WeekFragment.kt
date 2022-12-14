@@ -15,6 +15,8 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.MPPointF
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -169,6 +171,18 @@ class WeekFragment : Fragment() {
         barChart.axisLeft.setDrawGridLines(false)
         barChart.axisRight.setDrawGridLines(false)
 //        barChart.axisRight.isEnabled = false;
+        // on below line we are setting color for our bar data set
+        barDataSet.color = resources.getColor(R.color.red)
+        //                    barDataSet.setColors(ColorTemplate.JOYFUL_COLORS)
+        val colors: ArrayList<Int> = ArrayList()
+        colors.add(resources.getColor(R.color.teal_200))
+        colors.add(resources.getColor(R.color.yellow))
+        colors.add(resources.getColor(R.color.red))
+        colors.add(resources.getColor(R.color.material_dynamic_primary70))
+        colors.add(resources.getColor(R.color.green_c))
+
+        // on below line we are setting colors.
+        barDataSet.colors = colors
 
 
         // on below line we are enabling description as false
@@ -262,6 +276,21 @@ class WeekFragment : Fragment() {
         data.setValueTypeface(Typeface.DEFAULT_BOLD)
         data.setValueTextColor(Color.WHITE)
         pieChart.data = data
+        pieChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+
+                if (e != null) {
+                    pieChart.centerText = e.y.toString()
+                }
+
+            }
+
+            override fun onNothingSelected() {
+            }
+
+        })
+
+        pieChart.data.setDrawValues(false)
 
         // undo all highlights
         pieChart.highlightValues(null)

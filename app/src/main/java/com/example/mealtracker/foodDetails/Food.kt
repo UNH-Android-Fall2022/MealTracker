@@ -11,5 +11,5 @@ data class Food(
     val label: String,
     val nutrients: Nutrients,
     val servingSizes: List<ServingSize>,
-    val servingsPerContainer: Int
+    val servingsPerContainer: Double
 )
