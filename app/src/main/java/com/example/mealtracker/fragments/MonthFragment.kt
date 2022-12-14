@@ -15,6 +15,8 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.MPPointF
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -246,6 +248,7 @@ class MonthFragment : Fragment() {
         entries.add(PieEntry(calories.toFloat()))
         entries.add(PieEntry(cholestrol.toFloat()))
 
+
         val dataSet = PieDataSet(entries, "DAILY Intake")
         dataSet.setDrawIcons(false)
 
@@ -272,6 +275,21 @@ class MonthFragment : Fragment() {
         data.setValueTypeface(Typeface.DEFAULT_BOLD)
         data.setValueTextColor(Color.WHITE)
         pieChart.data = data
+        pieChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+
+                if (e != null) {
+                    pieChart.centerText = e.y.toString()
+                }
+
+            }
+
+            override fun onNothingSelected() {
+            }
+
+        })
+
+        pieChart.data.setDrawValues(false)
 
         // undo all highlights
         pieChart.highlightValues(null)

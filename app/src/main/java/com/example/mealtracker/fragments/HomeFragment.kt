@@ -273,7 +273,6 @@ class HomeFragment : Fragment() {
                     pieChart.legend.isEnabled = false
                     pieChart.setEntryLabelColor(Color.WHITE)
                     pieChart.setEntryLabelTextSize(12f)
-                    pieChart.setDrawEntryLabels(false)
 
                     pieChart.animateY(1400, Easing.EaseInOutQuad)
                     val entries: ArrayList<PieEntry> = ArrayList()
@@ -287,7 +286,7 @@ class HomeFragment : Fragment() {
                     dataSet.setDrawIcons(false)
 
                     // on below line we are setting slice for pie
-                    dataSet.sliceSpace = 6f
+                    dataSet.sliceSpace = 3f
                     dataSet.iconsOffset = MPPointF(0f, 40f)
                     dataSet.selectionShift = 10f
 
@@ -317,13 +316,15 @@ class HomeFragment : Fragment() {
                                 pieChart.centerText = e.y.toString()
                             }
 
-
                         }
 
                         override fun onNothingSelected() {
                         }
 
                     })
+
+                    pieChart.data.setDrawValues(false)
+
 
                     // undo all highlights
                     pieChart.highlightValues(null)
