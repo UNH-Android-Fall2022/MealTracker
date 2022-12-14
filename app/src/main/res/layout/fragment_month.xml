@@ -34,17 +34,98 @@
                     android:layout_height="264dp" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40sp"
-                android:layout_marginTop="50dp"
-                android:text="Month Fragment : To be Implemented"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:weightSum="2">
 
-                android:textAlignment="center"
-                android:textColor="#24AF26"
-                android:textSize="20sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pieChart"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="30dp"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_circle"
+                        android:drawableTint="@color/teal_200"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Fiber"
+                        android:textAlignment="center"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_circle"
+                        android:drawableTint="@color/yellow"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Protein"
+                        android:textAlignment="center"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_circle"
+                        android:drawableTint="@color/red"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Fat"
+                        android:textAlignment="center"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="70dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_circle"
+                        android:drawableTint="@color/material_dynamic_primary70"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Calories"
+                        android:textAlignment="center"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_circle"
+                        android:drawableTint="@color/green_c"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Cholestrol"
+                        android:textAlignment="center"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
+
 
     </ScrollView>
 
