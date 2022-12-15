@@ -68,7 +68,7 @@ class InputFragment : Fragment() {
         binding = FragmentInputBinding.inflate(layoutInflater)
         authenticaion = FirebaseAuth.getInstance()
         userId = authenticaion.currentUser?.uid.toString()
-        binding.showprogress.visibility = View.GONE
+
     }
 
     override fun onCreateView(
@@ -96,9 +96,7 @@ class InputFragment : Fragment() {
 
 //        Show drop down dialogue to show suggestions based on user input
         binding.findSuggestions.setOnClickListener {
-            binding.showprogress.visibility = View.VISIBLE
             showDropDown()
-            binding.showprogress.visibility = View.GONE
         }
 
 //        Save all input details for the food after getting the nutrition data from EDEMAN api
@@ -147,9 +145,9 @@ class InputFragment : Fragment() {
                 }
             }
 
-            binding.imageView.setOnClickListener {
-                dispatchTakePictureIntent()
-            }
+        }
+        binding.imageView.setOnClickListener {
+            dispatchTakePictureIntent()
         }
     }
 
@@ -388,6 +386,8 @@ class InputFragment : Fragment() {
 
 
             }
+            binding.imageView.setImageBitmap(null)
+            binding.searchBox.setText("")
         }
 
     }

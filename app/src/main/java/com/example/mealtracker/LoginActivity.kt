@@ -111,16 +111,11 @@ class LoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if (!email.equals("") && !pwd.equals("")) {
-            // if email and pwd is not empty we
-            // are opening our main 2 activity on below line.
+
             val i = Intent(this@LoginActivity, MainActivity::class.java)
 
-            // on below line we are calling start
-            // activity method to start our activity.
             startActivity(i)
 
-            // on below line we are calling
-            // finish to finish our main activity.
             finish()
         }
     }

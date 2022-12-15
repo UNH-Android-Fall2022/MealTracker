@@ -114,8 +114,7 @@ class WeekFragment : Fragment() {
                         "onDataChange: $calories $fiber $protein $fat $cholestrol"
                     )
                 }
-                if (isAdded)// This {@link androidx.fragment.app.Fragment} class method is responsible to check if the your view is attached to the Activity or not
-                {
+                if (isAdded) {
                     showPieChart(fiber, protein, fat, calories, cholestrol)
 
                     showBarChart(fiber, protein, fat, calories, cholestrol)

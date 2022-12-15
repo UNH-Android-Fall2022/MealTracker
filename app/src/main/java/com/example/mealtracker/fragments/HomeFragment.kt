@@ -232,8 +232,7 @@ class HomeFragment : Fragment() {
                         "onDataChange: $calories $fiber $protein $fat $cholestrol"
                     )
                 }
-                if (isAdded)// This {@link androidx.fragment.app.Fragment} class method is responsible to check if the your view is attached to the Activity or not
-                {
+                if (isAdded) {
                     pieChart = binding.pieChart
 //                    getDataFromFireBase(todaysDate)
                     // on below line we are setting user percent value,
