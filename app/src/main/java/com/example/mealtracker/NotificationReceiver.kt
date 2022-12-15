@@ -3,6 +3,7 @@
 package com.example.mealtracker
 
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -14,10 +15,25 @@ const val messageExtra = "messageExtra"
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val builder = NotificationCompat.Builder(context, channelID)
+
+        val intentDestination = Intent(context, LoginActivity::class.java)
+        intentDestination.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intentDestination,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_ONE_SHOT
+        )
+
+
+        val builder = NotificationCompat.Builder(context!!, channelID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Its time to track you meal")
-            .setContentText("Add a meal")
+            .setAutoCancel(true)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
+
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(0, builder.build())

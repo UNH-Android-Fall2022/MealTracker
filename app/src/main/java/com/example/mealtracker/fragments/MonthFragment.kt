@@ -297,7 +297,11 @@ class MonthFragment : Fragment() {
             }
 
         })
-
+        if (fiber + protein + fat + calories + cholestrol == 0) {
+            pieChart.centerText = "No Meal added in last month"
+        } else {
+            pieChart.centerText = ""
+        }
         pieChart.data.setDrawValues(false)
 
         // undo all highlights

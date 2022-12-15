@@ -78,15 +78,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun setTheFragment(fragment: Fragment) {
+     fun setTheFragment(fragment: Fragment) {
 
-        val mBundle = Bundle()
-        mBundle.putString("UserId", USER_ID)
-        fragment.arguments = mBundle
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container, fragment).commit()
-        }
-    }
+         val mBundle = Bundle()
+         mBundle.putString("UserId", USER_ID)
+         fragment.arguments = mBundle
+         supportFragmentManager.beginTransaction().apply {
+             replace(R.id.fragment_container, fragment).commit()
+         }
+     }
 
     //    Layout inflator for creating bottom navigation bar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -116,7 +116,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun scheduleNotification() {
-        val intent = Intent(applicationContext, NotificationReceiver::class.java)
+
+
+        alarmMgr = getSystemService(ALARM_SERVICE) as? AlarmManager?
+        val intent = Intent(this, NotificationReceiver::class.java)
 
         val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
@@ -124,7 +127,7 @@ class MainActivity : AppCompatActivity() {
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        alarmMgr = getSystemService(Context.ALARM_SERVICE) as? AlarmManager?
+
         val alarmFor: Calendar = Calendar.getInstance()
         alarmFor.set(Calendar.HOUR_OF_DAY, 12)
         alarmFor.set(Calendar.MINUTE, 0)
@@ -145,7 +148,7 @@ class MainActivity : AppCompatActivity() {
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(channelID, name, importance)
         channel.description = desc
-        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(NotificationManager::class.java)
         notificationManager.createNotificationChannel(channel)
     }
 }

@@ -8,7 +8,6 @@ import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
@@ -51,7 +50,6 @@ class InputFragment : Fragment() {
 
     //    private var storageRef = Firebase.storage.reference;
     var imageBitMap: Bitmap? = null
-    private lateinit var imageUri: Uri
     private lateinit var userId: String
     private lateinit var authenticaion: FirebaseAuth
 
@@ -67,17 +65,20 @@ class InputFragment : Fragment() {
         arguments?.let {
 
         }
+        binding = FragmentInputBinding.inflate(layoutInflater)
         authenticaion = FirebaseAuth.getInstance()
         userId = authenticaion.currentUser?.uid.toString()
-        binding = FragmentInputBinding.inflate(layoutInflater)
+        binding.showprogress.visibility = View.GONE
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragment//
+        // return inflater.inflate(R.layout.fragment_input, container, false)
+
+
         return binding.root
-//        return inflater.inflate(R.layout.fragment_input, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,7 +96,9 @@ class InputFragment : Fragment() {
 
 //        Show drop down dialogue to show suggestions based on user input
         binding.findSuggestions.setOnClickListener {
+            binding.showprogress.visibility = View.VISIBLE
             showDropDown()
+            binding.showprogress.visibility = View.GONE
         }
 
 //        Save all input details for the food after getting the nutrition data from EDEMAN api
@@ -145,10 +148,7 @@ class InputFragment : Fragment() {
             }
 
             binding.imageView.setOnClickListener {
-
-
                 dispatchTakePictureIntent()
-
             }
         }
     }
@@ -215,6 +215,7 @@ class InputFragment : Fragment() {
 
     // Making the api call to the server for getting suggestions bases on users input
     private fun getSuggestions(input: String): ArrayList<String> {
+
         val myArrayList = ArrayList<String>()
         val retroFitBuilder =
             Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL)
@@ -238,6 +239,7 @@ class InputFragment : Fragment() {
                 Log.d("Inside InputFragment", myStringBuilder.toString())
             }
 
+
             override fun onFailure(call: Call<List<String>?>, t: Throwable) {
                 Toast.makeText(
                     requireActivity(), "error fetching from API" + t.message, Toast.LENGTH_SHORT
@@ -245,18 +247,22 @@ class InputFragment : Fragment() {
                 Log.d("Main Activity ", "On failure " + t.message)
             }
         })
+
         return myArrayList
     }
 
     private fun getFoodDetails(input: String): FoodNutrients? {
+
         var quant: Double = binding.quantity.text.toString().toDouble();
         var foodNutrients: FoodNutrients? = null
+
 
 //        Calling the EDEMAM api to get the nutrition data based on the user input
         val retroFitBuilder =
             Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL)
                 .build().create(ApiInterface::class.java)
         val retoFitData = retroFitBuilder.getFoodDetails(input)
+
         val storageReference =
             retoFitData.enqueue(object : Callback<FoodDetails?> {
                 override fun onResponse(
@@ -299,7 +305,13 @@ class InputFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                         Log.d("Main Activity ", "On failure " + t.message)
-                        throw t
+                        if (isAdded) {
+                            Toast.makeText(
+                                requireActivity(),
+                                "Error fetching the nutrition data from api",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             })
@@ -363,15 +375,18 @@ class InputFragment : Fragment() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-                        }
-                } else {
 
+                        }
+
+                } else {
                     Toast.makeText(
                         requireActivity(),
                         "Error Saving",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+
+
             }
         }
 

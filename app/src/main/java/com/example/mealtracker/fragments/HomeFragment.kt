@@ -62,6 +62,7 @@ class HomeFragment : Fragment() {
     private var repository: DataRepository? = null
 
 
+
     private var param1: String? = null
     private var param2: String? = null
     lateinit var pieChart: PieChart
@@ -214,6 +215,7 @@ class HomeFragment : Fragment() {
 
                     if (dates.key == dummyDate) {
                         for (times in dates.children) {
+
                             Log.d("Inside TIMES", "${times.value}")
                             val nutrients = times.child("foodNutrients")
                             Log.d("Inside Nutrients", "${nutrients.value}")
@@ -222,6 +224,7 @@ class HomeFragment : Fragment() {
                             fat += nutrients.child("fat").getValue<Int>()!!
                             fiber += nutrients.child("fibtg").getValue<Int>()!!
                             protein += nutrients.child("procnt").getValue<Int>()!!
+
                         }
                     }
                     Log.d(
@@ -275,6 +278,11 @@ class HomeFragment : Fragment() {
                     pieChart.setEntryLabelTextSize(12f)
 
                     pieChart.animateY(1400, Easing.EaseInOutQuad)
+                    if (fiber + protein + fat + calories + cholestrol == 0) {
+                        pieChart.centerText = "No Meal added today"
+                    } else {
+                        pieChart.centerText = ""
+                    }
                     val entries: ArrayList<PieEntry> = ArrayList()
                     entries.add(PieEntry(fiber.toFloat()))
                     entries.add(PieEntry(protein.toFloat()))
@@ -332,6 +340,7 @@ class HomeFragment : Fragment() {
                     // loading chart
                     pieChart.invalidate()
                 }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
