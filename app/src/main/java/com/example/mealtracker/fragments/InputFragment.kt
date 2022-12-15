@@ -8,7 +8,6 @@ import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
@@ -51,7 +50,6 @@ class InputFragment : Fragment() {
 
     //    private var storageRef = Firebase.storage.reference;
     var imageBitMap: Bitmap? = null
-    private lateinit var imageUri: Uri
     private lateinit var userId: String
     private lateinit var authenticaion: FirebaseAuth
 
@@ -67,18 +65,20 @@ class InputFragment : Fragment() {
         arguments?.let {
 
         }
+        binding = FragmentInputBinding.inflate(layoutInflater)
         authenticaion = FirebaseAuth.getInstance()
         userId = authenticaion.currentUser?.uid.toString()
-        binding = FragmentInputBinding.inflate(layoutInflater)
         binding.showprogress.visibility = View.GONE
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragment//
+        // return inflater.inflate(R.layout.fragment_input, container, false)
+
+
         return binding.root
-//        return inflater.inflate(R.layout.fragment_input, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -305,7 +305,13 @@ class InputFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                         Log.d("Main Activity ", "On failure " + t.message)
-                        throw t
+                        if (isAdded) {
+                            Toast.makeText(
+                                requireActivity(),
+                                "Error fetching the nutrition data from api",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             })
@@ -369,15 +375,18 @@ class InputFragment : Fragment() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-                        }
-                } else {
 
+                        }
+
+                } else {
                     Toast.makeText(
                         requireActivity(),
                         "Error Saving",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+
+
             }
         }
 

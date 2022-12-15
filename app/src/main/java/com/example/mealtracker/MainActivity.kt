@@ -78,15 +78,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun setTheFragment(fragment: Fragment) {
+     fun setTheFragment(fragment: Fragment) {
 
-        val mBundle = Bundle()
-        mBundle.putString("UserId", USER_ID)
-        fragment.arguments = mBundle
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container, fragment).commit()
-        }
-    }
+         val mBundle = Bundle()
+         mBundle.putString("UserId", USER_ID)
+         fragment.arguments = mBundle
+         supportFragmentManager.beginTransaction().apply {
+             replace(R.id.fragment_container, fragment).commit()
+         }
+     }
 
     //    Layout inflator for creating bottom navigation bar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

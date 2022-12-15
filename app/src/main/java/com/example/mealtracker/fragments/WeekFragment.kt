@@ -289,6 +289,11 @@ class WeekFragment : Fragment() {
             }
 
         })
+        if (fiber + protein + fat + calories + cholestrol == 0) {
+            pieChart.centerText = "No Meal added in past week"
+        } else {
+            pieChart.centerText = ""
+        }
 
         pieChart.data.setDrawValues(false)
 
